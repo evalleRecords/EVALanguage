@@ -1,10 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estonian TTS Demo</title>
+<style>
+  body { font-family: sans-serif; padding: 1rem; max-width: 600px; margin: auto; }
+  textarea { width: 100%; height: 120px; }
+  button { margin-top: 1rem; }
+  audio { display: block; margin-top: 1rem; width: 100%; }
+</style>
+</head>
+<body>
+<h1>Estonian Text-to-Speech</h1>
+
+<label for="text">Enter text</label>
+<textarea id="text">Tere tulemast!</textarea>
+
+<div>
+  <label>Speaker: <input id="speaker" value="mari"></label>
+</div>
+
+<button id="speak">Speak</button>
+<p id="status"></p>
+<audio id="player" controls></audio>
+
 <script>
 const status = document.getElementById('status');
 const player = document.getElementById('player');
 const validSpeakers = ["mari","taavi","anna","martin"];
+// Update this URL to your deployed Vercel proxy
+const proxyURL = "https://YOUR_VERCEL_URL/api/tts";
 
 async function callTTS(text, speaker) {
-  const resp = await fetch("/api/tts", {
+  const resp = await fetch(proxyURL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text, speaker, speed: 1 })
@@ -22,21 +51,17 @@ document.getElementById('speak').addEventListener('click', async () => {
   player.src = "";
 
   try {
-    // Get text and speaker
     let text = document.getElementById('text').value.trim();
     let speaker = document.getElementById('speaker').value.trim();
 
-    // Validate speaker
     if (!validSpeakers.includes(speaker)) {
       status.textContent = "Invalid speaker, using default 'mari'";
       speaker = "mari";
     }
 
-    // Validate text
     if (!text) throw new Error("Please enter text");
-    text = text.substring(0, 200); // truncate to 200 chars max
+    text = text.substring(0, 200); // truncate text
 
-    // Call TTS
     const audioBlob = await callTTS(text, speaker);
     const url = URL.createObjectURL(audioBlob);
     player.src = url;
@@ -49,3 +74,5 @@ document.getElementById('speak').addEventListener('click', async () => {
   }
 });
 </script>
+</body>
+</html>
