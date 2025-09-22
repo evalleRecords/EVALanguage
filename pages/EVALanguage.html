@@ -1,97 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>English → Estonian with TartuNLP TTS</title>
-  <style>
-    body { font-family: system-ui, sans-serif; padding:1rem; max-width:700px; margin:auto; }
-    textarea {width:100%; height:120px;}
-    button { margin-top:0.5rem; }
-    audio { display:block; margin-top:1rem; width:100%; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estonian TTS Demo</title>
+<style>
+  body { font-family: sans-serif; padding: 1rem; max-width: 600px; margin: auto; }
+  textarea { width: 100%; height: 120px; }
+  button { margin-top: 1rem; }
+  audio { display: block; margin-top: 1rem; width: 100%; }
+</style>
 </head>
 <body>
-  <h1>English → Estonian TTS (TartuNLP)</h1>
+<h1>Estonian Text-to-Speech</h1>
 
-  <label for="text">English text</label>
-  <textarea id="text">Hello, how are you?</textarea>
+<label for="text">Enter Estonian text</label>
+<textarea id="text">Tere tulemast!</textarea>
 
-  <div>
-    <label><input id="doTranslate" type="checkbox" checked> Translate English → Estonian automatically</label>
-  </div>
+<div>
+  <label>Speaker: <input id="speaker" value="mari"></label>
+</div>
 
-  <button id="speak">Convert & Play</button>
-  <p id="status"></p>
-  <audio id="player" controls></audio>
+<button id="speak">Speak</button>
+<p id="status"></p>
+<audio id="player" controls></audio>
 
 <script>
 const status = document.getElementById('status');
 const player = document.getElementById('player');
 
-async function translateToEstonian(text){
-  const resp = await fetch('https://translate.argosopentech.com/translate', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ q: text, source: 'en', target: 'et', format: 'text' })
-  });
-  if(!resp.ok) {
-    throw new Error('Translation failed: ' + resp.status + ' ' + await resp.text());
-  }
-  const j = await resp.json();
-  return j.translatedText || j.result || j; 
-}
-
-async function callTartuNLPTTS(estText){
-  const apiUrl = 'https://api.tartunlp.ai/text-to-speech/v2';
-  const payload = {
-    text: estText,
-    speaker: 'mari',
-    speed: 1
-  };
-
-  const resp = await fetch(apiUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+async function callTTS(text, speaker) {
+  const resp = await fetch("/api/tts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, speaker, speed: 1 })
   });
 
-  if(!resp.ok){
-    const txt = await resp.text();
-    throw new Error('TTS request failed: ' + resp.status + ' — ' + txt);
+  if (!resp.ok) {
+    throw new Error(await resp.text());
   }
 
-  const blob = await resp.blob();
-  return blob;
+  return await resp.blob();
 }
 
 document.getElementById('speak').addEventListener('click', async () => {
-  status.textContent = 'Working...';
-  player.src = '';
+  status.textContent = "Working...";
+  player.src = "";
   try {
-    const english = document.getElementById('text').value.trim();
-    if(!english) throw new Error('Enter text');
+    const text = document.getElementById('text').value.trim();
+    const speaker = document.getElementById('speaker').value.trim();
+    if (!text) throw new Error("Please enter text");
 
-    let est = english;
-    if(document.getElementById('doTranslate').checked){
-      status.textContent = 'Translating to Estonian...';
-      est = await translateToEstonian(english);
-    }
-
-    status.textContent = 'Requesting TTS from TartuNLP...';
-    const audioBlob = await callTartuNLPTTS(est);
-
+    const audioBlob = await callTTS(text, speaker);
     const url = URL.createObjectURL(audioBlob);
     player.src = url;
     player.play();
 
-    status.textContent = 'Playing audio...';
+    status.textContent = "Playing audio...";
   } catch (err) {
     console.error(err);
-    status.textContent = 'Error: ' + err.message;
+    status.textContent = "Error: " + err.message;
   }
 });
 </script>
-
 </body>
 </html>
