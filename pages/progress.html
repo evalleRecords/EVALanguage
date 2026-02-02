@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="est">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minu Õpiedenemised - Calendar View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .calendar-wrapper {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        .calendar-header button:hover {
+            background-color: #0056b3;
+        }
+
+        .calendar-header h2 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .weekday {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 80px;
+        }
+
+        .day:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .day-empty {
+            background-color: #fafafa;
+        }
+
+        .day-number {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        /* Color coding for progress */
+        .day-low {
+            background-color: #ffebee;
+        }
+
+        .day-medium {
+            background-color: #fff3e0;
+        }
+
+        .day-high {
+            background-color: #e8f5e9;
+        }
+
+        .day-perfect {
+            background-color: #c8e6c9;
+        }
+
+        .day-score {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .day-percentage {
+            font-size: 0.75em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .today {
+            border: 2px solid #ff9800;
+            font-weight: bold;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .progress-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .progress-item:last-child {
+            border-bottom: none;
+        }
+
+        .date {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        #day-detail {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #007bff;
+        }
+
+        #day-detail.show {
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-close:hover {
+            color: #000;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📚 Minu Õpiedenemised (My Study Progress)</h1>
+    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+        <a href="quizzes.html" style="padding: 8px 16px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">← Tagasi Kvizzidele</a>
+    </div>
+    
+    <!-- Statistics -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>Tänane Punktisumma</h3>
+            <div class="value" id="today-score">0/0</div>
+        </div>
+        <div class="stat-card">
+            <h3>Keskmine %</h3>
+            <div class="value" id="avg-percentage">0%</div>
+        </div>
+        <div class="stat-card">
+            <h3>Testitud Päevad</h3>
+            <div class="value" id="days-practiced">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>Kokku Quizzid</h3>
+            <div class="value" id="total-quizzes">0</div>
+        </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar-wrapper">
+        <div class="calendar-header">
+            <button onclick="previousMonth()">← Eelmine</button>
+            <h2 id="month-year"></h2>
+            <button onclick="nextMonth()">Järgmine →</button>
+        </div>
+
+        <div class="calendar-grid" id="calendar"></div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background-color: #fafafa;"></div>
+                <span>Andmeid pole</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background-color: #ffebee;"></div>
+                <span>0-40%</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background-color: #fff3e0;"></div>
+                <span>41-70%</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background-color: #e8f5e9;"></div>
+                <span>71-90%</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background-color: #c8e6c9;"></div>
+                <span>91-100%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day Detail -->
+    <div id="day-detail">
+        <h3 id="detail-date"></h3>
+        <div id="detail-content"></div>
+    </div>
+
+    <!-- Progress List -->
+    <div class="progress-list">
+        <h2>Viimane 30 päeva</h2>
+        <div id="progress-list-content"></div>
+    </div>
+</div>
+
+<!-- Day Detail Modal -->
+<div id="dayModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeDayModal()">&times;</span>
+        <div class="modal-header" id="modal-date"></div>
+        <div id="modal-detail-content"></div>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:3000/api'; // Change this to your deployed server URL
+    let currentDate = new Date();
+
+    // Function to format date as YYYY-MM-DD
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // Get color class based on percentage
+    function getColorClass(percentage) {
+        if (percentage === 0) return 'day-empty';
+        if (percentage <= 40) return 'day-low';
+        if (percentage <= 70) return 'day-medium';
+        if (percentage <= 90) return 'day-high';
+        return 'day-perfect';
+    }
+
+    // Load calendar data
+    async function loadCalendar() {
+        try {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
+
+            const response = await fetch(`${API_URL}/calendar-data?year=${year}&month=${month}`);
+            const result = await response.json();
+
+            renderCalendar(result.data);
+            updateStats();
+        } catch (error) {
+            console.error('Error loading calendar:', error);
+        }
+    }
+
+    // Render calendar
+    function renderCalendar(data) {
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = '';
+
+        // Add weekday headers
+        const weekdays = ['Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev', 'Pühapäev'];
+        weekdays.forEach(day => {
+            const div = document.createElement('div');
+            div.className = 'weekday';
+            div.textContent = day;
+            calendar.appendChild(div);
+        });
+
+        // Get first day and number of days in month
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const firstDay = new Date(year, month, 1).getDay() - 1; // Adjust for Monday start
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Create data map for quick lookup
+        const dataMap = {};
+        data.forEach(item => {
+            dataMap[item.user_date] = item;
+        });
+
+        // Add empty cells for days before month starts
+        for (let i = 0; i < firstDay; i++) {
+            const div = document.createElement('div');
+            div.className = 'day day-empty';
+            calendar.appendChild(div);
+        }
+
+        // Add day cells
+        const today = formatDate(new Date());
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dayData = dataMap[dateStr];
+            
+            const div = document.createElement('div');
+            div.className = 'day';
+            
+            if (!dayData) {
+                div.className += ' day-empty';
+            } else {
+                div.className += ' ' + getColorClass(dayData.avg_percentage);
+            }
+
+            if (dateStr === today) {
+                div.classList.add('today');
+            }
+
+            let content = `<div class="day-number">${day}</div>`;
+            if (dayData) {
+                content += `<div class="day-score">${dayData.quiz_count} quizz</div>`;
+                content += `<div class="day-percentage">${dayData.avg_percentage}%</div>`;
+            }
+
+            div.innerHTML = content;
+            div.onclick = () => showDayDetail(dateStr);
+            calendar.appendChild(div);
+        }
+
+        // Update month/year display
+        const monthNames = ['Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'];
+        document.getElementById('month-year').textContent = `${monthNames[month]} ${year}`;
+    }
+
+    // Show day detail in modal
+    async function showDayDetail(dateStr) {
+        try {
+            const response = await fetch(`${API_URL}/all-progress`);
+            const result = await response.json();
+            
+            const dayData = result.progress.find(p => p.user_date === dateStr);
+            const modal = document.getElementById('dayModal');
+            const modalDate = document.getElementById('modal-date');
+            const modalContent = document.getElementById('modal-detail-content');
+
+            if (dayData) {
+                const dateObj = new Date(dateStr);
+                const dayName = dateObj.toLocaleDateString('et-EE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                
+                modalDate.textContent = dayName;
+                modalContent.innerHTML = `
+                    <p><strong>Kvizid sooritatud:</strong> ${dayData.quiz_count}</p>
+                    <p><strong>Keskmine protsent:</strong> ${dayData.avg_percentage}%</p>
+                    <p><strong>Koguskoor:</strong> ${dayData.total_score} punkti</p>
+                `;
+            } else {
+                const dateObj = new Date(dateStr);
+                const dayName = dateObj.toLocaleDateString('et-EE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                
+                modalDate.textContent = dayName;
+                modalContent.innerHTML = '<p>Sel päeval andmeid pole.</p>';
+            }
+
+            modal.classList.add('show');
+        } catch (error) {
+            console.error('Error loading day detail:', error);
+        }
+    }
+
+    // Close modal
+    function closeDayModal() {
+        document.getElementById('dayModal').classList.remove('show');
+    }
+
+    // Update statistics
+    async function updateStats() {
+        try {
+            const todayResponse = await fetch(`${API_URL}/today-progress`);
+            const todayData = await todayResponse.json();
+
+            const allResponse = await fetch(`${API_URL}/all-progress`);
+            const allData = allResponse.json();
+
+            // Update today's score
+            if (todayData.scores.length > 0) {
+                const totalScore = todayData.scores.reduce((sum, s) => sum + s.score, 0);
+                const totalQuestions = todayData.scores.reduce((sum, s) => sum + s.total_questions, 0);
+                document.getElementById('today-score').textContent = `${totalScore}/${totalQuestions}`;
+            }
+
+            document.getElementById('total-quizzes').textContent = todayData.count;
+
+            // Update average percentage
+            if (todayData.scores.length > 0) {
+                const avgPercentage = Math.round(todayData.scores.reduce((sum, s) => sum + s.percentage, 0) / todayData.scores.length);
+                document.getElementById('avg-percentage').textContent = `${avgPercentage}%`;
+            }
+
+            // Update days practiced and progress list
+            await updateProgressList(allData);
+        } catch (error) {
+            console.error('Error updating stats:', error);
+        }
+    }
+
+    // Update progress list
+    async function updateProgressList(allData) {
+        try {
+            const response = await fetch(`${API_URL}/all-progress`);
+            const result = await response.json();
+
+            document.getElementById('days-practiced').textContent = result.totalDays;
+
+            const progressList = document.getElementById('progress-list-content');
+            progressList.innerHTML = '';
+
+            result.progress.forEach(item => {
+                const dateObj = new Date(item.user_date + 'T00:00:00');
+                const dateStr = dateObj.toLocaleDateString('et-EE', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+                
+                const div = document.createElement('div');
+                div.className = 'progress-item';
+                div.innerHTML = `
+                    <span class="date">${dateStr}</span>
+                    <div style="text-align: center;">
+                        <span>${item.quiz_count} quizz, keskmine: ${item.avg_percentage}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${item.avg_percentage}%">
+                            ${item.avg_percentage}%
+                        </div>
+                    </div>
+                `;
+                progressList.appendChild(div);
+            });
+        } catch (error) {
+            console.error('Error updating progress list:', error);
+        }
+    }
+
+    // Navigation
+    function previousMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        loadCalendar();
+    }
+
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        loadCalendar();
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('dayModal');
+        if (event.target == modal) {
+            closeDayModal();
+        }
+    }
+
+    // Initialize
+    loadCalendar();
+    setInterval(updateStats, 30000); // Update stats every 30 seconds
+</script>
+
+</body>
+</html>

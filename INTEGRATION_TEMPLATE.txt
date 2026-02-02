@@ -1,0 +1,35 @@
+<!-- QUICK INTEGRATION GUIDE FOR OTHER QUIZZES
+
+To add progress tracking to quiz2.html through quiz7.html, follow these steps:
+
+1. ADD THIS TO <head> SECTION:
+   <script src="progress-tracker.js"></script>
+
+2. ADD THIS LINK IN YOUR QUIZ CONTENT (optional):
+   <p><a href="progress.html" style="color: #007bff; text-decoration: none;">📅 Vaata oma edenemist →</a></p>
+
+3. FIND YOUR checkAllAnswers() OR EQUIVALENT FUNCTION
+
+4. AT THE END OF THAT FUNCTION, ADD THIS LINE BEFORE THE CLOSING BRACE:
+   
+   saveQuizScore(QUIZ_NUMBER, correctCount, totalQuestions);
+   
+   Replace QUIZ_NUMBER with: 2, 3, 4, 5, 6, or 7
+
+EXAMPLE FOR QUIZ 2:
+If your function ends like:
+    
+    overallFeedback.scrollIntoView({ behavior: 'smooth' });
+    }
+
+Change it to:
+
+    overallFeedback.scrollIntoView({ behavior: 'smooth' });
+    
+    // Save score to database
+    saveQuizScore(2, correctCount, totalQuestions);  // Change 2 to match your quiz number
+    }
+
+That's it! The quiz will now track scores automatically.
+
+-->

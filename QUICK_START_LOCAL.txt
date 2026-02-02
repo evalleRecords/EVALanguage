@@ -1,0 +1,148 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                        LOCAL SQLITE SETUP - QUICK CARD                     ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🎯 SUPER SIMPLE SETUP (No Render needed!)                                  │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ BEFORE: Render + PostgreSQL + .env + Configuration 😫                     │
+│ AFTER:  SQLite + Local File + Just Run! 😊                               │
+│                                                                            │
+│ 1 Requirement: Node.js (download from nodejs.org)                        │
+│ 1 File: quiz_scores.db (created automatically)                           │
+│ 0 Configuration needed!                                                   │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ⚡ THE ONLY 3 COMMANDS YOU NEED                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ 1. Install (one time):                                                     │
+│    npm install                                                             │
+│                                                                            │
+│ 2. Start (every time you want to use it):                                 │
+│    npm start                                                               │
+│                                                                            │
+│ 3. Stop (when done):                                                       │
+│    Ctrl + C                                                                │
+│                                                                            │
+│ That's it! Your server is running on http://localhost:3000                │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📁 YOUR DATA LOCATION                                                      │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ c:\evalleRecords\EVALanguage\quiz_scores.db                              │
+│                                                                            │
+│ This is your SQLite database file containing:                             │
+│ • Quiz scores                                                              │
+│ • Percentages                                                              │
+│ • Dates                                                                    │
+│                                                                            │
+│ It's created automatically when you start the server.                     │
+│ You can backup, share, or delete it.                                      │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🌐 OPEN THESE IN BROWSER                                                   │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ Test Connection:                                                           │
+│ http://localhost:3000/api/health                                          │
+│                                                                            │
+│ Take Quiz:                                                                 │
+│ file:///c:/evalleRecords/EVALanguage/pages/quiz1.html                    │
+│                                                                            │
+│ View Progress:                                                             │
+│ file:///c:/evalleRecords/EVALanguage/pages/progress.html                 │
+│                                                                            │
+│ (Copy-paste URLs into browser address bar)                                │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 🚀 STEP BY STEP                                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ STEP 1: Install Node.js                                                   │
+│ ✓ Go to https://nodejs.org/                                              │
+│ ✓ Download LTS version                                                    │
+│ ✓ Install it                                                              │
+│ ✓ Restart computer                                                        │
+│                                                                            │
+│ STEP 2: Open Terminal                                                     │
+│ ✓ In VS Code: Terminal → New Terminal                                    │
+│ ✓ Or press: Ctrl + `                                                      │
+│                                                                            │
+│ STEP 3: Install Dependencies                                              │
+│ ✓ Type: npm install                                                       │
+│ ✓ Wait for completion                                                     │
+│                                                                            │
+│ STEP 4: Start Server                                                      │
+│ ✓ Type: npm start                                                         │
+│ ✓ See: "🚀 Server running on port 3000"                                  │
+│                                                                            │
+│ STEP 5: Use It                                                             │
+│ ✓ Open quiz1.html in browser                                             │
+│ ✓ Open progress.html to see calendar                                     │
+│ ✓ Enjoy! 📚                                                               │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ✨ WHAT YOU GET                                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ ✓ Automatic score saving                                                  │
+│ ✓ Beautiful calendar view                                                 │
+│ ✓ Color-coded performance (red/orange/green)                             │
+│ ✓ Statistics dashboard                                                    │
+│ ✓ 30-day progress history                                                 │
+│ ✓ Works offline (no internet)                                             │
+│ ✓ Private (everything local)                                              │
+│ ✓ No setup (after installing Node.js)                                     │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ ⚠️ COMMON ISSUES                                                           │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ "npm not recognized"                                                       │
+│ → Install Node.js from nodejs.org                                        │
+│                                                                            │
+│ "Connection refused"                                                       │
+│ → Make sure "npm start" is running                                        │
+│                                                                            │
+│ "Cannot find module"                                                       │
+│ → Run: npm install                                                        │
+│                                                                            │
+│ "No data in calendar"                                                      │
+│ → Take a quiz first, then refresh                                        │
+│                                                                            │
+│ "Port 3000 already in use"                                                │
+│ → Close other terminals or restart computer                              │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 📚 FILES YOU NEED TO READ                                                  │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│ Start here:          LOCAL_SETUP.md                                       │
+│ Complete guide:      SETUP_LOCAL_SQLITE.md                                │
+│ Overview:            README.md                                             │
+│ Visual guide:        INTEGRATION_HELPER.html                              │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                 READY? RUN: npm install && npm start                       ║
+║                        Then open pages/quiz1.html                          ║
+║                         Happy Learning! 📚🇪🇪                             ║
+╚════════════════════════════════════════════════════════════════════════════╝

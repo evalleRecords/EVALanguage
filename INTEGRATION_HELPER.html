@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="est">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Helper - Add Tracking to All Quizzes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .quiz-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .quiz-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .step {
+            background-color: #e8f4f8;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 4px solid #17a2b8;
+        }
+        .completed {
+            background-color: #d4edda;
+            border-left-color: #28a745;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-completed {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-pending {
+            background-color: #ffc107;
+            color: black;
+        }
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            padding: 8px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border-left: 3px solid #ddd;
+            padding-left: 15px;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            color: #999;
+            margin-right: 10px;
+        }
+        .checklist li.done {
+            background-color: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+        .checklist li.done:before {
+            content: "☑ ";
+            color: #4caf50;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📚 Integration Helper - Add Score Tracking to All Quizzes</h1>
+
+<p style="background-color: #e3f2fd; padding: 15px; border-radius: 4px; border-left: 4px solid #2196f3;">
+    <strong>✅ Quiz 1 is already done!</strong> Use this guide to add tracking to quiz2-7.
+</p>
+
+<!-- Quiz 1 -->
+<div class="quiz-section completed">
+    <div class="quiz-title">
+        Quiz 1: Statement to Question
+        <span class="status status-completed">✓ COMPLETED</span>
+    </div>
+    <p>Quiz 1 has already been updated with progress tracking.</p>
+</div>
+
+<!-- Quiz 2-7 Template -->
+<script>
+const quizzes = [
+    { num: 2, name: "Quiz 2: -L -S" },
+    { num: 3, name: "Quiz 3: -LE -SSE" },
+    { num: 4, name: "Quiz 4: -LT -ST" },
+    { num: 5, name: "Quiz 5: -GA -TA" },
+    { num: 6, name: "Quiz 6: -NA -KS -NI" },
+    { num: 7, name: "Quiz 7: Tõlkige!" }
+];
+
+function generateIntegration() {
+    quizzes.forEach(quiz => {
+        const section = document.createElement('div');
+        section.className = 'quiz-section';
+        section.innerHTML = `
+            <div class="quiz-title">
+                ${quiz.name}
+                <span class="status status-pending">PENDING</span>
+            </div>
+            
+            <div class="step">
+                <strong>Step 1: Add Script to &lt;head&gt;</strong>
+                <p>In <strong>quiz${quiz.num}.html</strong>, find the <code>&lt;head&gt;</code> section and add:</p>
+                <div class="code-block">&lt;script src="progress-tracker.js"&gt;&lt;/script&gt;</div>
+            </div>
+
+            <div class="step">
+                <strong>Step 2: Add Progress Link (Optional)</strong>
+                <p>Add this link somewhere in your quiz content:</p>
+                <div class="code-block">&lt;p&gt;&lt;a href="progress.html" style="color: #007bff; text-decoration: none;"&gt;📅 Vaata oma edenemist →&lt;/a&gt;&lt;/p&gt;</div>
+            </div>
+
+            <div class="step">
+                <strong>Step 3: Find Your Check Function</strong>
+                <p>Look for the function that calculates the final score. It might be named:</p>
+                <ul>
+                    <li><code>checkAllAnswers()</code></li>
+                    <li><code>checkAnswers()</code></li>
+                    <li><code>calculateScore()</code></li>
+                    <li>Or similar
+                </ul>
+            </div>
+
+            <div class="step">
+                <strong>Step 4: Add This Line Before Function Ends</strong>
+                <p>At the end of your score calculation function, before the final closing brace <code>}</code>, add:</p>
+                <div class="code-block">// Save score to database
+saveQuizScore(${quiz.num}, correctCount, totalQuestions);</div>
+                <p><strong>Note:</strong> Replace <code>correctCount</code> and <code>totalQuestions</code> with your actual variable names.</p>
+            </div>
+
+            <div class="step">
+                <strong>Step 5: Test It</strong>
+                <ul class="checklist">
+                    <li>Make sure <code>npm start</code> is running</li>
+                    <li>Open <code>quiz${quiz.num}.html</code></li>
+                    <li>Complete the quiz</li>
+                    <li>Check console (F12) for success notification</li>
+                    <li>View results in <code>progress.html</code></li>
+                </ul>
+            </div>
+        `;
+        document.getElementById('quiz-container').appendChild(section);
+    });
+}
+</script>
+
+<div id="quiz-container"></div>
+
+<!-- Common Variables -->
+<div class="quiz-section">
+    <div class="quiz-title">💡 Common Variable Names</div>
+    <p>When you find the score calculation, look for these variable names:</p>
+    <div class="code-block">
+correctCount     // number of correct answers<br>
+totalQuestions   // total questions<br>
+score            // might be called this instead<br>
+total            // might be called this instead<br>
+percentage       // calculated percentage<br>
+    </div>
+    <p><strong>Example in your code:</strong></p>
+    <div class="code-block">
+for (let i = 0; i &lt; totalQuestions; i++) {<br>
+&nbsp;&nbsp;// check answer<br>
+&nbsp;&nbsp;if (correct) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;correctCount++;<br>
+&nbsp;&nbsp;}<br>
+}<br>
+    </div>
+</div>
+
+<!-- Validation -->
+<div class="quiz-section">
+    <div class="quiz-title">✓ Validation Checklist</div>
+    <ul class="checklist">
+        <li>Added <code>&lt;script src="progress-tracker.js"&gt;&lt;/script&gt;</code> to quiz2.html</li>
+        <li>Found the score calculation function</li>
+        <li>Added <code>saveQuizScore(2, correctCount, totalQuestions);</code></li>
+        <li>Tested quiz2.html and saw success notification</li>
+        <li>Verified data appears in progress.html</li>
+        <li>Repeated for quiz3-7</li>
+    </ul>
+</div>
+
+<!-- Example Code -->
+<div class="quiz-section">
+    <div class="quiz-title">📝 Real Example</div>
+    <p><strong>BEFORE:</strong></p>
+    <div class="code-block">
+function checkAllAnswers() {<br>
+&nbsp;&nbsp;let correctCount = 0;<br>
+&nbsp;&nbsp;const totalQuestions = quizData.length;<br>
+<br>
+&nbsp;&nbsp;for (let i = 0; i &lt; totalQuestions; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ... check logic ...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (userAnswer === correctAnswer) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;correctCount++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;// Display result<br>
+&nbsp;&nbsp;const percentage = (correctCount / totalQuestions) * 100;<br>
+&nbsp;&nbsp;showResult(percentage);<br>
+}
+    </div>
+
+    <p><strong>AFTER:</strong></p>
+    <div class="code-block">
+function checkAllAnswers() {<br>
+&nbsp;&nbsp;let correctCount = 0;<br>
+&nbsp;&nbsp;const totalQuestions = quizData.length;<br>
+<br>
+&nbsp;&nbsp;for (let i = 0; i &lt; totalQuestions; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// ... check logic ...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if (userAnswer === correctAnswer) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;correctCount++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;// Display result<br>
+&nbsp;&nbsp;const percentage = (correctCount / totalQuestions) * 100;<br>
+&nbsp;&nbsp;showResult(percentage);<br>
+<br>
+&nbsp;&nbsp;// <span style="color: green;"><strong>NEW: Save to database</strong></span><br>
+&nbsp;&nbsp;<span style="color: green;"><strong>saveQuizScore(2, correctCount, totalQuestions);</strong></span><br>
+}
+    </div>
+</div>
+
+<!-- Tips -->
+<div class="quiz-section">
+    <div class="quiz-title">🎯 Pro Tips</div>
+    <ul>
+        <li><strong>Find the right function:</strong> Search for "percentage" or "score" in your code</li>
+        <li><strong>Correct variable names:</strong> Look at the showResult() or display function to see what variables are used</li>
+        <li><strong>One line only:</strong> You only need to add ONE line: the saveQuizScore() call</li>
+        <li><strong>Test each one:</strong> After updating each quiz, test it before moving to the next</li>
+        <li><strong>Check console:</strong> Press F12, go to Console tab, and check for errors or success messages</li>
+        <li><strong>Verify data:</strong> After each quiz, refresh progress.html to see if data was saved</li>
+    </ul>
+</div>
+
+<script>
+generateIntegration();
+</script>
+
+</body>
+</html>

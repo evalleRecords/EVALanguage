@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estonian Quiz 4: Case Endings (-LT, -ST) (Kust?, Kellelt? , Millelt? , Kellest? , Millest?)</title>
+    <script src="progress-tracker.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -128,8 +129,10 @@
     <div id="quiz-container">
         <h1>Quiz 4: Täida Lüngad (Fill in the Blanks) 🇪🇪</h1>
         <p>Sinu ülesanne on kirjutada sulgudes olevale tüvisõnale **õige kääne**.</p>
-        <p>Teema: (-LT, -ST) (Kust?, Kellelt? , Millelt? , Kellest? , Millest?)</p>
-
+        <p>Teema: (-LT, -ST) (Kust?, Kellelt? , Millelt? , Kellest? , Millest?)</p>        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+            <a href="quizzes.html" style="padding: 8px 16px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">← Tagasi Kvizzidele</a>
+            <a href="progress.html" style="padding: 8px 16px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">📅 Vaata oma edenemist</a>
+        </div>
         <div id="questions-list">
             </div>
 
@@ -228,6 +231,9 @@
                 overallFeedback.textContent += ' Proovi uuesti! 🤔';
             }
             overallFeedback.scrollIntoView({ behavior: 'smooth' });
+
+            // Save score to database
+            saveQuizScore(4, correctCount, totalQuestions);
         }
 
         // Initialize the quiz when the page loads

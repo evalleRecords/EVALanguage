@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="est">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estonian Quizzes - Kvizzide Leht</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-bar a {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .nav-bar a:hover {
+            background-color: #0056b3;
+        }
+
+        .quizzes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-card h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .quiz-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .quiz-card .difficulty {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .quiz-card a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .quiz-card a:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .difficulty-easy {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-hard {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇪🇪 Estonian Language Quizzes</h1>
+            <p>Eesti Keele Kvizzid</p>
+        </header>
+
+        <div class="nav-bar">
+            <a href="progress.html">📅 Vaata oma edenemist (View Progress)</a>
+        </div>
+
+        <div class="quizzes-grid">
+            <!-- Quiz 1 -->
+            <div class="quiz-card">
+                <h2>Quiz 1: Question Formation</h2>
+                <p>Kes see on? Mis see on?</p>
+                <p>Learn to form questions from statements. Transform given statements into proper questions.</p>
+                <div class="difficulty difficulty-easy">Difficulty: Beginner 🟢</div>
+                <a href="quiz1.html">Start Quiz →</a>
+            </div>
+
+            <!-- Quiz 2 -->
+            <div class="quiz-card">
+                <h2>Quiz 2: Case Endings (-L, -S)</h2>
+                <p>Kelle? Kus? Millal?</p>
+                <p>Master the locative and genitive case endings in Estonian. Essential for basic conversations.</p>
+                <div class="difficulty difficulty-easy">Difficulty: Beginner 🟢</div>
+                <a href="quiz2.html">Start Quiz →</a>
+            </div>
+
+            <!-- Quiz 3 -->
+            <div class="quiz-card">
+                <h2>Quiz 3: Case Endings (-LE, -SSE)</h2>
+                <p>Kuhu? Kellele?</p>
+                <p>Learn the illative and allative case endings for expressing direction and destination.</p>
+                <div class="difficulty difficulty-medium">Difficulty: Intermediate 🟡</div>
+                <a href="quiz3.html">Start Quiz →</a>
+            </div>
+
+            <!-- Quiz 4 -->
+            <div class="quiz-card">
+                <h2>Quiz 4: Case Endings (-LT, -ST)</h2>
+                <p>Kust? Kellelt? Millelt?</p>
+                <p>Understanding the elative case endings for expressing origin and source.</p>
+                <div class="difficulty difficulty-medium">Difficulty: Intermediate 🟡</div>
+                <a href="quiz4.html">Start Quiz →</a>
+            </div>
+
+            <!-- Quiz 5 -->
+            <div class="quiz-card">
+                <h2>Quiz 5: Case Endings (-GA, -TA)</h2>
+                <p>Kellega? Millega? Kelleta? Milleta?</p>
+                <p>Comitative and abessive cases - expressing accompaniment and absence.</p>
+                <div class="difficulty difficulty-medium">Difficulty: Intermediate 🟡</div>
+                <a href="quiz5.html">Start Quiz →</a>
+            </div>
+
+            <!-- Quiz 6 -->
+            <div class="quiz-card">
+                <h2>Quiz 6: Case Endings (-NA, -KS, -NI)</h2>
+                <p>Kellena? Kelleks? Milleni?</p>
+                <p>Essive, translative, and terminative cases for complex grammatical expressions.</p>
+                <div class="difficulty difficulty-hard">Difficulty: Advanced 🔴</div>
+                <a href="quiz6.html">Start Quiz →</a>
+            </div>
+
+            <!-- Quiz 7 -->
+            <div class="quiz-card">
+                <h2>Quiz 7: Translation Challenge</h2>
+                <p>Tõlkige! (Translate!)</p>
+                <p>Put your knowledge to the test! Translate English sentences to Estonian using all the cases you've learned.</p>
+                <div class="difficulty difficulty-hard">Difficulty: Advanced 🔴</div>
+                <a href="quiz7.html">Start Quiz →</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>📚 Keep practicing to improve your Estonian language skills!</p>
+            <p>Harjuta regulaarselt - Edus tulevad kiirelt!</p>
+        </footer>
+    </div>
+</body>
+</html>
