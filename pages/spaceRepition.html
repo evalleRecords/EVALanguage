@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estonian Words Quiz - Fill in the Blank</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .quiz-container {
+            display: none;
+        }
+        .quiz-container.active {
+            display: block;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        .question-number {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .question {
+            margin-bottom: 25px;
+        }
+        .question-text {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        input[type="text"].correct {
+            border-color: #4caf50;
+            background-color: #f1f8f5;
+        }
+        input[type="text"].incorrect {
+            border-color: #f44336;
+            background-color: #fff5f5;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .btn-next {
+            background: #4caf50;
+            color: white;
+            width: 100%;
+        }
+        .btn-next:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .btn-show {
+            background: #ff9800;
+            color: white;
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+        .btn-show:hover {
+            background: #f57c00;
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .stats {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .start-screen {
+            text-align: center;
+        }
+        .start-screen.active {
+            display: block;
+        }
+        .start-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .start-screen p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .btn-start {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            font-size: 18px;
+            width: 100%;
+            margin-top: 30px;
+        }
+        .btn-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+        .results-screen {
+            display: none;
+            text-align: center;
+        }
+        .results-screen.active {
+            display: block;
+        }
+        .results-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 30px 0;
+        }
+        .btn-restart {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇪🇪 Space repition</h1>
+        <!--<p class="subtitle">Fill in the blank: What is the Estonian word?</p> -->
+
+        <!-- Start Screen -->
+        <div class="start-screen active">
+            <!-- <h2>Welcome!</h2>
+            <p>Test your knowledge of 3000 Estonian words. You'll be shown the English definition and need to type the Estonian word.</p> -->
+            <button class="btn-start" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div class="quiz-container">
+            <div class="stats">
+                <span id="current-question">Question 1</span> / <span id="total-questions">3000</span> | 
+                Correct: <span id="correct-count">0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="question-number" id="question-number">Question 1 of 3000</div>
+            <div class="question">
+                <div class="question-text">Translate:</div> <strong id="english-word">word</strong>?</div>
+                <div class="input-group">
+                    <input type="text" id="answer-input" placeholder="Type the Estonian word..." />
+                    <button class="btn-show" onclick="showAnswer()">Show</button>
+                </div>
+                <div class="feedback" id="feedback"></div>
+                <div id="correct-answer-display" style="margin-top: 15px; padding: 10px; background: #fff9e6; border-radius: 8px; display: none; color: #856404;">
+                    Correct answer: <strong id="correct-answer-text"></strong>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-submit" onclick="submitAnswer()">Submit</button>
+                <button class="btn-submit" onclick="backQuestion()" style="background: #9c27b0;">Back</button>
+                <button class="btn-submit" onclick="skipQuestion()" style="background: #9c27b0;">Next</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-screen">
+            <h2>Quiz Complete! 🎉</h2>
+            <div class="score-display" id="final-score">0%</div>
+            <p id="score-message" style="color: #666; font-size: 18px;"></p>
+            <button class="btn-restart" onclick="restartQuiz()">Start Again</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            { number: 1, estonian: 'buss bussi bussi', english: 'bus (3 forms)' }, 
+            { number: 2, estonian: 'lähen bussi peale', english: 'i am taking the bus' }, 
+            { number: 3, estonian: 'rong rongi rongi', english: 'train (3 forms)' }, 
+            { number: 4, estonian: 'lennuk lennuki lennukit', english: 'plane (3 forms)' }, 
+            { number: 5, estonian: 'lähen lennuki peale', english: 'i am taking the plane' }, 
+            { number: 6, estonian: 'laev laeva laeva', english: 'ship (3 forms)' }, 
+            { number: 7, estonian: 'lähen laeva peale', english: 'i am taking the ship' }, 
+            { number: 8, estonian: 'praam praami praami', english: 'ferry (3 forms)' }, 
+            { number: 9, estonian: 'Mis kell sa kodus oled', english: 'at what time are you at home' }, 
+            { number: 10, estonian: 'Mis kella ajal sa kodus oled', english: 'at what time are you at home (using ajal))' }, 
+            { number: 11, estonian: 'Ma olen kodus kell seitsme', english: 'at seven oclock i am at home' }, 
+            { number: 12, estonian: 'Ma olen kodus kella seitsme ajal', english: 'at seven oclock i am at home (using ajal)' }, 
+            { number: 13, estonian: 'Kell üks ma olen koosolekul', english: 'at one oclock i am at a meeting' }, 
+            { number: 14, estonian: 'Kella ühe ajal ma olen koosolekul', english: 'at one oclock i am at a meeting (using ajal)' }, 
+            { number: 15, estonian: 'üks ühe', english: 'one (2 forms)' }, 
+            { number: 16, estonian: 'kaks kahe', english: 'two (2 forms)' }, 
+            { number: 17, estonian: 'kolm kolme', english: 'three (2 forms)' }, 
+            { number: 18, estonian: 'neli nelja', english: 'four (2 forms)' }, 
+            { number: 19, estonian: 'viis viie', english: 'five (2 forms)' }, 
+            { number: 20, estonian: 'kuus kuue', english: 'six (2 forms)' }, 
+            { number: 21, estonian: 'seitse seitsme', english: 'seven (2 forms)' }, 
+            { number: 22, estonian: 'kaheksa kaheksa', english: 'eight (2 forms)' }, 
+            { number: 23, estonian: 'üheksa üheksa', english: 'nine (2 forms)' }, 
+            { number: 24, estonian: 'kümme kümne', english: 'ten (2 forms)' }, 
+            { number: 25, estonian: 'üksteist üheteist', english: 'eleven (2 forms)' }, 
+            { number: 26, estonian: 'kaksteist kaheteis', english: 'twelve (2 forms)' }, 
+            { number: 27, estonian: 'paiku', english: 'about/around' }, 
+            { number: 28, estonian: 'Mis kella paiku sa kodus oled?', english: 'around what time are you at home' }, 
+            { number: 29, estonian: 'õhtul kella seitsme paiku ma olen kodus', english: 'around seven oclock in he evening i am at home' }, 
+            { number: 30, estonian: 'öösel kella kaheteist paiku ma lähen magama', english: 'around twelve oclock i go to sleep' }, 
+            { number: 31, estonian: 'kuhu sa lähed?', english: 'where are you going' }, 
+            { number: 32, estonian: 'eksursioon ekskursiooni ekskursioonile', english: 'excursion (I II le)' }, 
+            { number: 33, estonian: 'lähen ekskursioonile', english: 'i go to an excursion' },
+            { number: 34, estonian: 'töö töö tööle', english: 'work (I II le)' }, 
+            { number: 35, estonian: 'jõuan tööle kell kümme', english: 'i get to work at ten oclock' }, 
+            { number: 36, estonian: 'kursus kursuse kursusele', english: 'course (I II le)' }, 
+            { number: 37, estonian: 'õhtul saadan abikaasa jaapani keele kursusele', english: 'in the evening i send my spouse to a japanese course' }, 
+            { number: 38, estonian: 'lähen homme ühele üritusele', english: 'I will go to an ven tomorrow' }, 
+            { number: 39, estonian: 'lähen homme ühele koolitusele', english: 'i will go to a training tomorrow' }, 
+            { number: 40, estonian: 'lähen homme ühele konverentsile', english: 'i will go to a conference tomorrow' }, 
+            { number: 41, estonian: 'lähen homme ühele kursusele', english: 'i will go to a course tomorrow' }, 
+            { number: 42, estonian: 'lähen homme ühele messile', english: 'i will go to a trade show tomorrow' }, 
+            { number: 43, estonian: 'lähen homme ühele festivalile', english: 'i will go o a festival tomorrow' }, 
+            { number: 44, estonian: 'lähen homme ühele juubelile', english: 'i will g oto n aniversay tomorrow' }, 
+            { number: 45, estonian: 'kuhu sa oled?', english: 'where are you?' }, 
+            { number: 46, estonian: 'ööklubi ööklubi ööklubisse', english: 'night club (I II sse)' }, 
+            { number: 47, estonian: 'ma jõuan ööklubisse kella kümne paiku', english: 'i will get to the night club at around ten oclock' }, 
+            { number: 48, estonian: 'kontor kontori kontorisse', english: 'office (I II sse)' }, 
+            { number: 49, estonian: 'homme hommikul lähen kontorisse kell üheksa', english: 'tomorrow morning i will go to the office at nine oclock' }, 
+            { number: 50, estonian: 'sadam sadama sadamasse', english: 'harbour (I II sse)' }, 
+            { number: 51, estonian: 'kella kolme ajal saadan kolleegid sadamasse', english: 'at three oclock i will take my colleagues to the habour' }, 
+            { number: 52, estonian: 'ostukeskus ostukeskuse ostukeskusesse', english: 'shopping mall (I II sse)' }, 
+            { number: 53, estonian: 'pärastlõunal lähen ostukeskusesse', english: 'i will go in the afternoon in the shopping mall' }, 
+            { number: 54, estonian: 'kasiino kasiino kasiinosse', english: 'casino (I II sse)' }, 
+            { number: 55, estonian: 'ma jõuan kasiinosse kell üksteist', english: 'i will get t the casino at eleven' }, 
+            { number: 56, estonian: 'spaa spaa spaasse', english: 'spa (I II sse)' }, 
+            { number: 57, estonian: 'nädalavahetusel saadan lapsed spaasse', english: 'during the weekend i will send the children to the spa' }, 
+            { number: 58, estonian: 'Mis kell sa spasse jõuad?', english: 'at what time will you get to the spa?' }, 
+            { number: 59, estonian: 'Mis kell sa ostukeskusesse jõuad?', english: 'at what time will you get to the shopping mall?' }, 
+            { number: 60, estonian: 'Mis kell sa ööklubisse jõuad?', english: 'at what time will get to the night club?' }, 
+            { number: 61, estonian: 'Mis kell sa autopesulasse jõuad?', english: 'at what time will get to the car wash?' }, 
+            { number: 62, estonian: 'Mis kell sa kohvikusse jõuad?', english: 'at what time will get to the coffee shop?' }, 
+            { number: 63, estonian: 'Mis kell sa kaasiinosse jõuad?', english: 'at what time will get to the casino?' }, 
+            { number: 64, estonian: 'Mis kell sa bussipeatusesse jõuad?', english: 'at what time will get to the bus stop?' }, 
+            { number: 65, estonian: 'Mis kell sa ujulasse jõuad?', english: 'at what time will get to the swimming pool' }, 
+            { number: 66, estonian: 'Mis kell sa täna poskontorisse lähed?', english: 'what time are you going to the post office tomorrow?' }, 
+            { number: 67, estonian: 'Mis kell sa täna kirikusse lähed?', english: 'what time are you going to the church tomorrow?' }, 
+            { number: 68, estonian: 'Mis kell sa täna maleklubisse lähed?', english: 'what time are you going to the chess club tomorrow?' }, 
+            { number: 69, estonian: 'Mis kell sa täna politseisse lähed?', english: 'what time are you going to the police tomorrow?' }, 
+            { number: 70, estonian: 'Mis kell sa täna pubisse lähed?', english: 'what time are you going to the pub tomorrow?' }, 
+            { number: 71, estonian: 'Mis kell sa täna kontorisse lähed?', english: 'what time are you going to the office tomorrow?' }, 
+            { number: 72, estonian: 'Mis kell sa täna autoteenindusesse lähed?', english: 'what time are you going to the car service tomorrow?' }, 
+            { number: 73, estonian: 'Mis kell sa täna maksuametisse lähed?', english: 'what time are you going to the tax office tomorrow?' }, 
+            { number: 74, estonian: 'Mis kell sa täna töötukassasse lähed?', english: 'what time are you going to the unemployment fund tomorrow?' }, 
+            { number: 75, estonian: 'Mis kell sa täna ministeeriumisse lähed?', english: 'what time are you going to the ministry tomorrow?' }, 
+            { number: 76, estonian: 'järgima', english: 'follow' }, 
+            { number: 77, estonian: 'tegu', english: 'act' }, { number: 78, estonian: 'miks', english: 'why' }, { number: 79, estonian: 'küsi', english: 'ask' }, { number: 80, estonian: 'mehed', english: 'men' }, { number: 81, estonian: 'muutus', english: 'change' }, { number: 82, estonian: 'läks', english: 'went' }, { number: 83, estonian: 'tuli', english: 'light' }, { number: 84, estonian: 'liiki', english: 'kind' }, { number: 85, estonian: 'välja', english: 'off' }, { number: 86, estonian: 'vaja', english: 'need' }, { number: 87, estonian: 'maja', english: 'house' }, { number: 88, estonian: 'pilt', english: 'picture' }, { number: 89, estonian: 'proovida', english: 'try' }, { number: 90, estonian: 'us', english: 'us' }, { number: 91, estonian: 'jälle', english: 'again' }, { number: 92, estonian: 'loomade', english: 'animal' }, { number: 93, estonian: 'punkti', english: 'point' }, { number: 94, estonian: 'ema', english: 'mother' }, { number: 95, estonian: 'maailma', english: 'world' }, { number: 96, estonian: 'lähedal', english: 'near' }, { number: 97, estonian: 'ehitada', english: 'build' }, { number: 98, estonian: 'ise', english: 'self' }, { number: 99, estonian: 'Maa', english: 'earth' }, { number: 100, estonian: 'isa', english: 'father' }, { number: 101, estonian: 'tahes', english: 'any' }, { number: 102, estonian: 'uus', english: 'new' }, { number: 103, estonian: 'töö', english: 'work' }, { number: 104, estonian: 'osa', english: 'part' }, { number: 105, estonian: 'võtta', english: 'take' }, { number: 106, estonian: 'saada', english: 'get' }, { number: 107, estonian: 'koht', english: 'place' }, { number: 108, estonian: 'tehtud', english: 'made' }, { number: 109, estonian: 'elada', english: 'live' }, { number: 110, estonian: 'kus', english: 'where' }, { number: 111, estonian: 'pärast', english: 'after' }, { number: 112, estonian: 'tagasi', english: 'back' }, { number: 113, estonian: 'vähe', english: 'little' }, { number: 114, estonian: 'ainult', english: 'only' }, { number: 115, estonian: 'ringi', english: 'round' }, { number: 116, estonian: 'mees', english: 'man' }, { number: 117, estonian: 'aasta', english: 'year' }, { number: 118, estonian: 'tuli', english: 'came' }, { number: 119, estonian: 'näita', english: 'show' }, { number: 120, estonian: 'kõik', english: 'every' }, { number: 121, estonian: 'hea', english: 'good' }, { number: 122, estonian: 'mind', english: 'me' }, { number: 123, estonian: 'anda', english: 'give' }, { number: 124, estonian: 'meie', english: 'our' }, { number: 125, estonian: 'alla', english: 'under' }, { number: 126, estonian: 'nimi', english: 'name' }, { number: 127, estonian: 'väga', english: 'very' }, { number: 128, estonian: 'läbi', english: 'through' }, { number: 129, estonian: 'lihtsalt', english: 'just' }, { number: 130, estonian: 'vorm', english: 'form' }, { number: 131, estonian: 'lause', english: 'sentence' }, { number: 132, estonian: 'suur', english: 'great' }, { number: 133, estonian: 'arvan', english: 'think' }, { number: 134, estonian: 'öelda', english: 'say' }, { number: 135, estonian: 'aidata', english: 'help' }, { number: 136, estonian: 'madal', english: 'low' }, { number: 137, estonian: 'line', english: 'line' }, { number: 138, estonian: 'erinevad', english: 'differ' }, { number: 139, estonian: 'Omakorda', english: 'turn' }, { number: 140, estonian: 'põhjus', english: 'cause' }, { number: 141, estonian: 'palju', english: 'much' }, { number: 142, estonian: 'tähendab', english: 'mean' }, { number: 143, estonian: 'enne', english: 'before' }, { number: 144, estonian: 'liikuda', english: 'move' }, { number: 145, estonian: 'õigus', english: 'right' }, { number: 146, estonian: 'poiss', english: 'boy' }, { number: 147, estonian: 'vana', english: 'old' }, { number: 148, estonian: 'liiga', english: 'too' }, { number: 149, estonian: 'sama', english: 'same' }, { number: 150, estonian: 'ta', english: 'she' }, { number: 151, estonian: 'kõik', english: 'all' }, { number: 152, estonian: 'seal', english: 'there' }, { number: 153, estonian: 'kui', english: 'when' }, { number: 154, estonian: 'üles', english: 'up' }, { number: 155, estonian: 'kasutamine', english: 'use' }, { number: 156, estonian: 'oma', english: 'your' }, { number: 157, estonian: 'viis', english: 'way' }, { number: 158, estonian: 'umbes', english: 'about' }, { number: 159, estonian: 'palju', english: 'many' }, { number: 160, estonian: 'siis', english: 'then' }, { number: 161, estonian: 'neid', english: 'them' }, { number: 162, estonian: 'kirjuta', english: 'write' }, { number: 163, estonian: 'oleks', english: 'would' }, { number: 164, estonian: 'nagu', english: 'like' }, { number: 165, estonian: 'nii', english: 'so' }, { number: 166, estonian: 'need', english: 'these' }, { number: 167, estonian: 'tema', english: 'her' }, { number: 168, estonian: 'pikk', english: 'long' }, { number: 169, estonian: 'teha', english: 'make' }, { number: 170, estonian: 'asi', english: 'thing' }, { number: 171, estonian: 'vaata', english: 'see' }, { number: 172, estonian: 'Tema', english: 'him' }, { number: 173, estonian: 'kaks', english: 'two' }, { number: 174, estonian: 'on', english: 'has' }, { number: 175, estonian: 'vaata', english: 'look' }, { number: 176, estonian: 'rohkem', english: 'more' }, { number: 177, estonian: 'päev', english: 'day' }, { number: 178, estonian: 'võiks', english: 'could' }, { number: 179, estonian: 'minna', english: 'go' }, { number: 180, estonian: 'tule', english: 'come' }, { number: 181, estonian: 'tegi', english: 'did' }, { number: 182, estonian: 'number', english: 'number' }, { number: 183, estonian: 'heli', english: 'sound' }, { number: 184, estonian: 'ei', english: 'no' }, { number: 185, estonian: 'kõige', english: 'most' }, { number: 186, estonian: 'inimesed', english: 'people' }, { number: 187, estonian: 'minu', english: 'my' }, { number: 188, estonian: 'üle', english: 'over' }, { number: 189, estonian: 'tea', english: 'know' }, { number: 190, estonian: 'vesi', english: 'water' }, { number: 191, estonian: 'kui', english: 'than' }, { number: 192, estonian: 'üleskutse', english: 'call' }, { number: 193, estonian: 'Esimene', english: 'first' }, { number: 194, estonian: 'kes', english: 'who' }, { number: 195, estonian: 'võib', english: 'may' }, { number: 196, estonian: 'alla', english: 'down' }, { number: 197, estonian: 'pool', english: 'side' }, { number: 198, estonian: 'olnud', english: 'been' }, { number: 199, estonian: 'nüüd', english: 'now' }, { number: 200, estonian: 'leida', english: 'find' },
+            { number: 201, estonian: 'juht', english: 'head' }, { number: 202, estonian: 'seisma', english: 'stand' }, { number: 203, estonian: 'enda', english: 'own' }, { number: 204, estonian: 'lehekülg', english: 'page' }, { number: 205, estonian: 'peaks', english: 'should' }, { number: 206, estonian: 'riik', english: 'country' }, { number: 207, estonian: 'leitud', english: 'found' }, { number: 208, estonian: 'vastus', english: 'answer' }, { number: 209, estonian: 'kool', english: 'school' }, { number: 210, estonian: 'kasvama', english: 'grow' }, { number: 211, estonian: 'uuring', english: 'study' }, { number: 212, estonian: 'veel', english: 'still' }, { number: 213, estonian: 'õppida', english: 'learn' }, { number: 214, estonian: 'tehase', english: 'plant' }, { number: 215, estonian: 'kate', english: 'cover' }, { number: 216, estonian: 'toidu', english: 'food' }, { number: 217, estonian: 'päike', english: 'sun' }, { number: 218, estonian: 'neli', english: 'four' }, { number: 219, estonian: 'vahel', english: 'between' }, { number: 220, estonian: 'riik', english: 'state' }, { number: 221, estonian: 'hoida', english: 'keep' }, { number: 222, estonian: 'silma', english: 'eye' }, { number: 223, estonian: 'kunagi', english: 'never' }, { number: 224, estonian: 'viimane', english: 'last' }, { number: 225, estonian: 'lase', english: 'let' }, { number: 226, estonian: 'arvasin', english: 'thought' }, { number: 227, estonian: 'linna', english: 'city' }, { number: 228, estonian: 'puu', english: 'tree' }, { number: 229, estonian: 'rist', english: 'cross' }, { number: 230, estonian: 'farm', english: 'farm' }, { number: 231, estonian: 'raske', english: 'hard' }, { number: 232, estonian: 'algus', english: 'start' }, { number: 233, estonian: 'võiks', english: 'might' }, { number: 234, estonian: 'lugu', english: 'story' }, { number: 235, estonian: 'saag', english: 'saw' }, { number: 236, estonian: 'palju', english: 'far' }, { number: 237, estonian: 'meri', english: 'sea' }, { number: 238, estonian: 'juhtida', english: 'draw' }, { number: 239, estonian: 'vasakule', english: 'left' }, { number: 240, estonian: 'hilja', english: 'late' }, { number: 241, estonian: 'run', english: 'run' }, { number: 242, estonian: 'ei', english: 'don\'t' }, { number: 243, estonian: 'kuigi', english: 'while' }, { number: 244, estonian: 'vajutage', english: 'press' }, { number: 245, estonian: 'lähedal', english: 'close' }, { number: 246, estonian: 'öö', english: 'night' }, { number: 247, estonian: 'reaalne', english: 'real' }, { number: 248, estonian: 'elu', english: 'life' }, { number: 249, estonian: 'paari', english: 'few' }, { number: 250, estonian: 'Põhja-', english: 'north' }, { number: 251, estonian: 'raamat', english: 'book' }, { number: 252, estonian: 'läbi', english: 'carry' }, { number: 253, estonian: 'võttis', english: 'took' }, { number: 254, estonian: 'teadus', english: 'science' }, { number: 255, estonian: 'sööma', english: 'eat' }, { number: 256, estonian: 'tuba', english: 'room' }, { number: 257, estonian: 'sõber', english: 'friend' }, { number: 258, estonian: 'hakkas', english: 'began' }, { number: 259, estonian: 'mõte', english: 'idea' }, { number: 260, estonian: 'kala', english: 'fish' }, { number: 261, estonian: 'mägi', english: 'mountain' }, { number: 262, estonian: 'peatus', english: 'stop' }, { number: 263, estonian: 'üks kord', english: 'once' }, { number: 264, estonian: 'alus', english: 'base' }, { number: 265, estonian: 'hear', english: 'hear' }, { number: 266, estonian: 'hobune', english: 'horse' }, { number: 267, estonian: 'lõigatud', english: 'cut' }, { number: 268, estonian: 'kindlasti', english: 'sure' }, { number: 269, estonian: 'vaata', english: 'watch' }, { number: 270, estonian: 'värv', english: 'color' }, { number: 271, estonian: 'nägu', english: 'face' }, { number: 272, estonian: 'puit', english: 'wood' }, { number: 273, estonian: 'Peamine', english: 'main' }, { number: 274, estonian: 'avatud', english: 'open' }, { number: 275, estonian: 'tunduvad', english: 'seem' }, { number: 276, estonian: 'kokku', english: 'together' }, { number: 277, estonian: 'järgmine', english: 'next' }, { number: 278, estonian: 'valge', english: 'white' }, { number: 279, estonian: 'lapsed', english: 'children' }, { number: 280, estonian: 'alustada', english: 'begin' }, { number: 281, estonian: 'sain', english: 'got' }, { number: 282, estonian: 'kõndida', english: 'walk' }, { number: 283, estonian: 'Näiteks', english: 'example' }, { number: 284, estonian: 'leevendada', english: 'ease' }, { number: 285, estonian: 'paber', english: 'paper' }, { number: 286, estonian: 'rühm', english: 'group' }, { number: 287, estonian: 'alati', english: 'always' }, { number: 288, estonian: 'muusika', english: 'music' }, { number: 289, estonian: 'need', english: 'those' }, { number: 290, estonian: 'nii', english: 'both' }, { number: 291, estonian: 'märgi', english: 'mark' }, { number: 292, estonian: 'sageli', english: 'often' }, { number: 293, estonian: 'kiri', english: 'letter' }, { number: 294, estonian: 'kuni', english: 'until' }, { number: 295, estonian: 'miil', english: 'mile' }, { number: 296, estonian: 'jõgi', english: 'river' }, { number: 297, estonian: 'auto', english: 'car' }, { number: 298, estonian: 'jalad', english: 'feet' }, { number: 299, estonian: 'hooldus', english: 'care' }, { number: 300, estonian: 'teine', english: 'second' },
+            ...Array.from({length: 2700}, (_, i) => {
+                const estWords = ['word', 'valgus', 'kivi', 'meri', 'jõgi', 'puu', 'lind', 'kala', 'koer', 'kass', 'looma', 'lehm', 'hobune', 'siga', 'kaits', 'karv', 'nahk', 'jala', 'käe', 'pea', 'silm', 'kõrv', 'nina', 'suu', 'hammas', 'keel', 'süda', 'kops', 'maks', 'neer', 'luustik', 'lihased', 'veri', 'valge', 'must', 'punane', 'sinine', 'roheline', 'kollane', 'oranž', 'lilac', 'hall', 'pruun', 'helesinine', 'tumesinine', 'helevalge', 'tumemusti', 'külm', 'soe', 'kuiv', 'märg', 'niiske', 'külma', 'sooja', 'kerge', 'raske', 'kerge', 'raske', 'kõrge', 'madal', 'pikk', 'lühike', 'suur', 'väike', 'kahe', 'lai', 'kitsas', 'paks', 'õhuke', 'rikis', 'terve', 'haige', 'tugev', 'nõrk', 'julge', 'kartlik', 'nutikas', 'rumal', 'armas', 'pahastu', 'hea', 'halb', 'ilus', 'isevärtkune', 'uus', 'vana', 'noor', 'vanaeakaslane', 'perenaine', 'naabrid', 'kuningas', 'kuninganna', 'prints', 'prints', 'hertsog', 'graafia', 'maarja', 'krahv', 'parun', 'orjus', 'vabadus', 'riik', 'linn', 'alevik', 'küla', 'majad', 'mets', 'mägi', 'kuru', 'järv', 'jõgi', 'oja', 'ojaks', 'tiik', 'rannik', 'rand', 'liiv', 'kivi', 'maakond', 'piirkond', 'põld', 'aed', 'aiamaa', 'viinistu', 'orhidee', 'ristik', 'pitsid', 'linte', 'naela', 'puu', 'puulehe', 'oksa', 'juur', 'koor', 'puidul', 'lill', 'õis', 'õisnuppu', 'leht', 'vahtu', 'vaik', 'harjais', 'juuri', 'põõsas', 'rohtu', 'rohuks', 'seente', 'samblik', 'salaami', 'ürt', 'taimse', 'taim'];
+                const enWords = ['meaning', 'light', 'stone', 'sea', 'river', 'tree', 'bird', 'fish', 'dog', 'cat', 'animal', 'cow', 'horse', 'pig', 'bear', 'hair', 'skin', 'leg', 'hand', 'head', 'eye', 'ear', 'nose', 'mouth', 'tooth', 'tongue', 'heart', 'lung', 'liver', 'kidney', 'skeleton', 'muscles', 'blood', 'white', 'black', 'red', 'blue', 'green', 'yellow', 'orange', 'purple', 'gray', 'brown', 'light blue', 'dark blue', 'light white', 'dark black', 'cold', 'warm', 'dry', 'wet', 'damp', 'coldness', 'warmth', 'light', 'heavy', 'light', 'heavy', 'tall', 'short', 'long', 'short', 'big', 'small', 'double', 'wide', 'narrow', 'thick', 'thin', 'healthy', 'ill', 'healthy', 'sick', 'strong', 'weak', 'brave', 'fearful', 'intelligent', 'stupid', 'dear', 'nasty', 'good', 'bad', 'beautiful', 'stubborn', 'new', 'old', 'young', 'elderly', 'landlord', 'neighbors', 'king', 'queen', 'prince', 'princess', 'duke', 'count', 'countess', 'count', 'viscount', 'slavery', 'freedom', 'state', 'city', 'town', 'village', 'houses', 'forest', 'mountain', 'gorge', 'lake', 'river', 'stream', 'stream', 'pond', 'coast', 'beach', 'sand', 'stone', 'province', 'region', 'field', 'garden', 'garden land', 'vineyard', 'orchid', 'lace', 'laces', 'ribbon', 'ribbons', 'nail', 'nails', 'tree', 'tree leaves', 'branch', 'root', 'bark', 'wood', 'flower', 'blossom', 'bud', 'leaf', 'whisk', 'resin', 'hairbrush', 'roots', 'bush', 'grass', 'grasses', 'mushrooms', 'lichen', 'sausage', 'herb', 'plant', 'plant'];
+                return { number: 300 + i + 1, estonian: estWords[i % estWords.length], english: enWords[i % enWords.length] };
+            })
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let totalQuestions = quizData.length;
+
+        function startQuiz() {
+            document.querySelector('.start-screen').classList.remove('active');
+            document.querySelector('.quiz-container').classList.add('active');
+            document.getElementById('total-questions').textContent = totalQuestions;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = quizData[currentQuestionIndex];
+            document.getElementById('english-word').textContent = question.english;
+            document.getElementById('question-number').textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+            document.getElementById('current-question').textContent = `Question ${currentQuestionIndex + 1}`;
+            document.getElementById('answer-input').value = '';
+            document.getElementById('answer-input').className = '';
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('correct-answer-display').style.display = 'none';
+            
+            const progress = ((currentQuestionIndex) / totalQuestions) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            
+            document.getElementById('answer-input').focus();
+        }
+
+        function submitAnswer() {
+            const input = document.getElementById('answer-input').value.trim();
+            const question = quizData[currentQuestionIndex];
+            const isCorrect = input.toLowerCase() === question.estonian.toLowerCase();
+
+            const feedback = document.getElementById('feedback');
+            const inputElement = document.getElementById('answer-input');
+            
+            if (isCorrect) {
+                correctAnswers++;
+                inputElement.className = 'correct';
+                feedback.className = 'feedback show correct';
+                feedback.textContent = '✓ Correct!';
+                document.getElementById('correct-count').textContent = correctAnswers;
+            } else if (input === '') {
+                feedback.className = 'feedback show incorrect';
+                feedback.textContent = '✗ Please type an answer';
+            } else {
+                inputElement.className = 'incorrect';
+                feedback.className = 'feedback show incorrect';
+                feedback.textContent = '✗ Incorrect. Try again or click Show.';
+            }
+        }
+
+        function showAnswer() {
+            const question = quizData[currentQuestionIndex];
+            document.getElementById('answer-input').value = question.estonian;
+            document.getElementById('answer-input').className = '';
+            document.getElementById('correct-answer-display').style.display = 'block';
+            document.getElementById('correct-answer-text').textContent = question.estonian;
+            document.getElementById('feedback').classList.remove('show');
+        }
+
+        function skipQuestion() {
+            nextQuestion();
+        }
+        function backQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < totalQuestions) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.querySelector('.quiz-container').classList.remove('active');
+            document.querySelector('.results-screen').classList.add('active');
+            
+            const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+            document.getElementById('final-score').textContent = percentage + '%';
+            document.getElementById('score-message').textContent = 
+                `You got ${correctAnswers} out of ${totalQuestions} correct!`;
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            document.querySelector('.results-screen').classList.remove('active');
+            document.querySelector('.start-screen').classList.add('active');
+        }
+
+        // Allow Enter key to submit
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('answer-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitAnswer();
+                }
+            });
+            
+            // Allow right arrow key to go to next question
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    skipQuestion();
+                }
+            });
+                        // Allow right arrow key to go to next question
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    backQuestion();
+                }
+            });
+            // Allow Up arrow key to go to next question
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowUp') {
+                    showAnswer();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
