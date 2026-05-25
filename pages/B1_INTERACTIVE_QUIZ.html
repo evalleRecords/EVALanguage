@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B1 Exam Interactive Vocabulary Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.95;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .category {
+            margin-bottom: 50px;
+        }
+        
+        .category-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .category-count {
+            font-size: 0.8em;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .quiz-entry {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .quiz-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .quiz-entry:hover {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 0 -20px;
+        }
+        
+        .number {
+            flex: 0 0 40px;
+            font-weight: bold;
+            color: #764ba2;
+            text-align: right;
+            font-size: 1.1em;
+        }
+        
+        .english {
+            flex: 0 0 35%;
+            color: #555;
+            font-style: italic;
+            font-size: 1em;
+        }
+        
+        .input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+        
+        .quiz-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .quiz-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .quiz-input.correct {
+            border-color: #4caf50;
+            background-color: #f1f8f4;
+        }
+        
+        .quiz-input.incorrect {
+            border-color: #f44336;
+            background-color: #fdf3f1;
+        }
+        
+        .feedback {
+            flex: 0 0 40px;
+            font-size: 1.8em;
+            text-align: center;
+            font-weight: bold;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .checkmark {
+            color: #4caf50;
+            animation: slideIn 0.4s ease;
+        }
+        
+        .xmark {
+            color: #f44336;
+            animation: slideIn 0.4s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .correct-answer {
+            font-size: 0.85em;
+            color: #4caf50;
+            font-weight: 600;
+            margin-top: 5px;
+            padding: 5px 10px;
+            background: #f1f8f4;
+            border-radius: 3px;
+            display: none;
+        }
+        
+        .correct-answer.show {
+            display: block;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .show-all-btn {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+        }
+        
+        .show-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .check-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .check-btn:hover {
+            background: #5b6ee0;
+            transform: translateY(-1px);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-entry {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .input-wrapper {
+                width: 100%;
+            }
+            
+            .english {
+                flex: 1;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇪🇪 B1 Exam Vocabulary Quiz</h1>
+            <p>Fill in the Estonian word for each English translation</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="correctCount">0</div>
+                    <div>Correct</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCount">0</div>
+                    <div>Total Words</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="percentCount">0%</div>
+                    <div>Progress</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div id="quizContainer"></div>
+            
+            <div class="buttons">
+                <button class="reset-btn" onclick="resetAll()">🔄 Reset All</button>
+                <button class="show-all-btn" onclick="showAllAnswers()">👁️ Show All Answers</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vocabulary data
+        const vocabulary = [
+            // Header & Title Section (6)
+            { english: "Estonian", estonian: "EESTI", category: "Header & Title Section" },
+            { english: "language", estonian: "KEELE", category: "Header & Title Section" },
+            { english: "B1 level", estonian: "B1-TASEME", category: "Header & Title Section" },
+            { english: "level", estonian: "TASEME", category: "Header & Title Section" },
+            { english: "exam", estonian: "EKSAMI", category: "Header & Title Section" },
+            { english: "consultation guide/workbook", estonian: "KONSULTATSIOONIVIHIK", category: "Header & Title Section" },
+            
+            // Writing Section (74)
+            { english: "writing", estonian: "KIRJUTAMINE", category: "Writing Section" },
+            { english: "first", estonian: "ESIMENE", category: "Writing Section" },
+            { english: "task/assignment/exercise", estonian: "ÜLESANNE", category: "Writing Section" },
+            { english: "variant/version", estonian: "VARIANT", category: "Writing Section" },
+            { english: "you visited/went to", estonian: "KÄISITE", category: "Writing Section" },
+            { english: "at a swimming pool/aquatic center", estonian: "VEEKESKUSES", category: "Writing Section" },
+            { english: "spending time", estonian: "AEGA VEETMAS", category: "Writing Section" },
+            { english: "for better service", estonian: "PAREMAKS TEENINDAMISEKS", category: "Writing Section" },
+            { english: "requested/asked (passive)", estonian: "PALUTAKSE", category: "Writing Section" },
+            { english: "to fill out/complete", estonian: "TÄITA", category: "Writing Section" },
+            { english: "questionnaire", estonian: "KÜSIMUSTIK", category: "Writing Section" },
+            { english: "answer (imperative)", estonian: "VASTAKE", category: "Writing Section" },
+            { english: "each/every", estonian: "IGALE", category: "Writing Section" },
+            { english: "question", estonian: "KÜSIMUSELE", category: "Writing Section" },
+            { english: "age", estonian: "VANUS", category: "Writing Section" },
+            { english: "gender/sex", estonian: "SUGU", category: "Writing Section" },
+            { english: "how often", estonian: "KUI TIHTI", category: "Writing Section" },
+            { english: "with whom", estonian: "KELLEGA KOOS", category: "Writing Section" },
+            { english: "what do you think", estonian: "MIDA ARVATE", category: "Writing Section" },
+            { english: "conditions", estonian: "TINGIMUSTEST", category: "Writing Section" },
+            { english: "service", estonian: "TEENINDUSEST", category: "Writing Section" },
+            { english: "what do you like most here", estonian: "MIS TEILE SIIN KÕIGE ROHKEM MEELDIB", category: "Writing Section" },
+            { english: "why", estonian: "MIKS", category: "Writing Section" },
+            { english: "what doesn't please/like", estonian: "MIS EI MEELDI", category: "Writing Section" },
+            { english: "how long", estonian: "KUI KAUA", category: "Writing Section" },
+            { english: "usually/typically", estonian: "TAVALISELT", category: "Writing Section" },
+            { english: "spend (time)", estonian: "VEEDATE", category: "Writing Section" },
+            { english: "would recommend", estonian: "SOOVITAKSITE", category: "Writing Section" },
+            { english: "to acquaintances/friends", estonian: "TUTTAVATELE", category: "Writing Section" },
+            { english: "in which kind of", estonian: "MISSUGUSTES", category: "Writing Section" },
+            { english: "been to before", estonian: "VEEL KÄINUD", category: "Writing Section" },
+            { english: "second task", estonian: "TEINE ÜLESANNE", category: "Writing Section" },
+            { english: "have to/must", estonian: "PEATE", category: "Writing Section" },
+            { english: "to leave work earlier today", estonian: "TÄNA VAREM TÖÖLT ARA MINEMA", category: "Writing Section" },
+            { english: "leave (imperative)", estonian: "JÄTKE", category: "Writing Section" },
+            { english: "to colleagues", estonian: "KOLLEEGIDELE", category: "Writing Section" },
+            { english: "message/notice", estonian: "TEADE", category: "Writing Section" },
+            { english: "about it", estonian: "SELLE KOHTA", category: "Writing Section" },
+            { english: "to leave", estonian: "LAHKUMA", category: "Writing Section" },
+            { english: "time/hour", estonian: "KELL", category: "Writing Section" },
+            { english: "you go/leave", estonian: "LÄHETE", category: "Writing Section" },
+            { english: "replaces/substitutes for", estonian: "ASENDAB", category: "Writing Section" },
+            { english: "can be reached/contacted", estonian: "KONTAKTI SAAB", category: "Writing Section" },
+            { english: "required length", estonian: "NÕUTAV PIKKUS", category: "Writing Section" },
+            { english: "approximately/about", estonian: "UMBES", category: "Writing Section" },
+            { english: "word", estonian: "SÕA", category: "Writing Section" },
+            { english: "answers", estonian: "VASTUSED", category: "Writing Section" },
+            { english: "story", estonian: "JUTT", category: "Writing Section" },
+            { english: "creative writing", estonian: "LOOVKIRJUTAMINE", category: "Writing Section" },
+            { english: "about a person", estonian: "INIMESEST", category: "Writing Section" },
+            { english: "with whom", estonian: "KELLEGA", category: "Writing Section" },
+            { english: "recently", estonian: "HILJUTI", category: "Writing Section" },
+            { english: "became acquainted", estonian: "TUTTAVAKS SAITE", category: "Writing Section" },
+            { english: "lives", estonian: "ELAB", category: "Writing Section" },
+            { english: "works", estonian: "TÖÖTAB", category: "Writing Section" },
+            { english: "what kind of", estonian: "MILLINE", category: "Writing Section" },
+            { english: "character/personality", estonian: "ISELOOM", category: "Writing Section" },
+            { english: "has/he or she has", estonian: "TAL ON", category: "Writing Section" },
+            { english: "hobbies", estonian: "HOBID", category: "Writing Section" },
+            { english: "do together", estonian: "KOOS TEETE", category: "Writing Section" },
+            { english: "title", estonian: "PEALKIRI", category: "Writing Section" },
+            { english: "new acquaintance", estonian: "UUS TUTTAV", category: "Writing Section" },
+            { english: "personal letter", estonian: "ISIKLIK KIRI", category: "Writing Section" },
+            { english: "with an interesting person", estonian: "HUVITAVA INIMESEGA", category: "Writing Section" },
+            { english: "want to (write about it)", estonian: "TAHATE SELLEST", category: "Writing Section" },
+            { english: "to an Estonian friend", estonian: "EESTLASEST SÕBRALE", category: "Writing Section" },
+            { english: "hello", estonian: "TERE", category: "Writing Section" },
+            { english: "how are you", estonian: "KUIDAS SA ELAD", category: "Writing Section" },
+            { english: "I became acquainted", estonian: "TUTVUSIN", category: "Writing Section" },
+            
+            // Listening Section (71)
+            { english: "listening", estonian: "KUULAMINE", category: "Listening Section" },
+            { english: "listen (imperative)", estonian: "KUULAKE", category: "Listening Section" },
+            { english: "Japanese (person)", estonian: "JAAPANLANE", category: "Listening Section" },
+            { english: "Japanese (by nationality)", estonian: "JAAPANI", category: "Listening Section" },
+            { english: "for children", estonian: "LASTELE", category: "Listening Section" },
+            { english: "to dance", estonian: "TANTSIMA", category: "Listening Section" },
+            { english: "dancing", estonian: "TANTSIMINE", category: "Listening Section" },
+            { english: "three children", estonian: "KOLM LAST", category: "Listening Section" },
+            { english: "within two months", estonian: "KAHE KUUGA", category: "Listening Section" },
+            { english: "in a restaurant", estonian: "RESTORANIS", category: "Listening Section" },
+            { english: "difficult/complicated", estonian: "KEERULINE", category: "Listening Section" },
+            { english: "difficult/hard", estonian: "RASKE", category: "Listening Section" },
+            { english: "in music school", estonian: "MUUSIKAKOOLIS", category: "Listening Section" },
+            
+            // Travel Section (50)
+            { english: "traveling", estonian: "REISIMINE", category: "Travel Section" },
+            { english: "vacation/holiday trips", estonian: "PUHKUSEREISID", category: "Travel Section" },
+            { english: "where to travel", estonian: "KUHU REISIDA", category: "Travel Section" },
+            { english: "with what", estonian: "MILLEGA", category: "Travel Section" },
+            { english: "price", estonian: "HIND", category: "Travel Section" },
+            { english: "accommodation conditions", estonian: "ELAMISTINGIMUSED", category: "Travel Section" },
+            { english: "other entertainment", estonian: "MUU MEELELAHUTUS", category: "Travel Section" },
+            { english: "price discounts", estonian: "HINNASOODUSTUSED", category: "Travel Section" },
+            { english: "ticket booking", estonian: "PILETITE BRONEERIMINE", category: "Travel Section" },
+            { english: "vacation in Egypt or Tunisia", estonian: "PUHKUS EGIPTUSES VÕI TUNEESIAS", category: "Travel Section" },
+            { english: "airplane departs", estonian: "LENNUK VÄLJUB", category: "Travel Section" },
+            { english: "from Tallinn", estonian: "TALLINNAST", category: "Travel Section" },
+            { english: "every Saturday", estonian: "IGAL LAUPÄEVAL", category: "Travel Section" },
+            { english: "in the hotel", estonian: "HOTELLIS", category: "Travel Section" },
+            { english: "comfortable double rooms", estonian: "MUGAVAD KAHEKOHALISED TOAD", category: "Travel Section" },
+            { english: "breakfast", estonian: "HOMMIKUSÖÖK", category: "Travel Section" },
+            { english: "acquaintance with sights/attractions", estonian: "TUTVUMINE VAATAMISVÄÄRSUSTEGA", category: "Travel Section" },
+            { english: "excursions in Estonian language", estonian: "EKSKURSIOONID EESTI KEELES", category: "Travel Section" },
+            { english: "warm sea", estonian: "SOE MERI", category: "Travel Section" },
+            { english: "magnificent beaches", estonian: "SUUREPÄRASED RANNAD", category: "Travel Section" },
+            { english: "price starting from", estonian: "HIND ALATES", category: "Travel Section" },
+            { english: "from euros", estonian: "EUROST", category: "Travel Section" },
+            { english: "to groups", estonian: "GRUPPIDELE", category: "Travel Section" },
+            { english: "vacation by the sea", estonian: "PUHKUS MERE ÄÄRES", category: "Travel Section" },
+            { english: "times per year", estonian: "KORD AASTAS", category: "Travel Section" },
+            { english: "could/might", estonian: "VÕIKSID", category: "Travel Section" },
+            { english: "would like", estonian: "TAHAKSITE", category: "Travel Section" },
+            { english: "definitely someday", estonian: "KINDLASTI KUNAGI", category: "Travel Section" },
+            { english: "with a guide", estonian: "GIIDIGA", category: "Travel Section" },
+            { english: "without", estonian: "ILMA", category: "Travel Section" },
+            { english: "family", estonian: "PERE", category: "Travel Section" },
+            { english: "with friends", estonian: "SÕPRADEGA", category: "Travel Section" },
+            { english: "season", estonian: "AASTAAJAL", category: "Travel Section" },
+            { english: "best", estonian: "KÕIGE PAREM", category: "Travel Section" },
+            { english: "to northern or southern countries", estonian: "PÕHJA- VÕI LÕUNAMAADESSE", category: "Travel Section" },
+            { english: "prefer", estonian: "EELISTATE", category: "Travel Section" },
+            { english: "by car, bus or plane", estonian: "AUTO, BUSSI VÕI LENNUKIGA", category: "Travel Section" },
+            { english: "visiting shops/stores", estonian: "KAUPLUSTE KÜLASTAMINE", category: "Travel Section" },
+            { english: "important", estonian: "OLULINE", category: "Travel Section" },
+            { english: "imagine", estonian: "KUJUTAGE ETTE", category: "Travel Section" },
+            { english: "cheap plane tickets", estonian: "SOODSAD LENNUPILETID", category: "Travel Section" },
+            { english: "for four days", estonian: "NELJAKS PÄEVAKS", category: "Travel Section" },
+            { english: "to the seaside for vacation", estonian: "MERE ÄÄRDE PUHKAMA", category: "Travel Section" },
+            { english: "discuss among yourselves", estonian: "ARUTAGE OMAVAHEL", category: "Travel Section" },
+            { english: "must take with you", estonian: "KAASA PEATE VÕTMA", category: "Travel Section" },
+            
+            // Reading Section (158)
+            { english: "reading", estonian: "LUGEMINE", category: "Reading Section" },
+            { english: "read the text", estonian: "LUGEGE TEKSTI", category: "Reading Section" },
+            { english: "Otepää (place name)", estonian: "OTEPÄÄ", category: "Reading Section" },
+            { english: "winter capital", estonian: "TALVEPEALINN", category: "Reading Section" },
+            { english: "in December", estonian: "DETSEMBRIL", category: "Reading Section" },
+            { english: "winter", estonian: "TALV", category: "Reading Section" },
+            { english: "winter began", estonian: "ALGAS TALV", category: "Reading Section" },
+            { english: "opportunities/possibilities", estonian: "VÕIMALUSED", category: "Reading Section" },
+            { english: "to ski", estonian: "SUUSATADA", category: "Reading Section" },
+            { english: "to sledge", estonian: "KELGUTADA", category: "Reading Section" },
+            { english: "ski jumps", estonian: "SUUSAHÜPPEID", category: "Reading Section" },
+            { english: "no matter what the weather", estonian: "ÜKSKÕIK MILLINE ILM", category: "Reading Section" },
+            { english: "elsewhere", estonian: "MUJAL", category: "Reading Section" },
+            { english: "lots of snow", estonian: "PALJU LUND", category: "Reading Section" },
+            { english: "the most appropriate place", estonian: "KÕIGE ÕIGEM KOHT", category: "Reading Section" },
+            { english: "the arrival of winter was celebrated", estonian: "TALVE SAABUMIST TÄHISTATI", category: "Reading Section" },
+            { english: "all day", estonian: "TERVE PÄEVA", category: "Reading Section" },
+            { english: "in the morning", estonian: "HOMMIKUL", category: "Reading Section" },
+            { english: "Christmas market was opened", estonian: "AVATI JÕULUTURG", category: "Reading Section" },
+            { english: "Christmas market", estonian: "JÕULUTURG", category: "Reading Section" },
+            { english: "Christmas food", estonian: "JÕULUTOITU", category: "Reading Section" },
+            { english: "for visitors", estonian: "KÜLASTAJATELE", category: "Reading Section" },
+            { english: "Christmas lunch was offered", estonian: "PAKUTI JÕULULÕUNAT", category: "Reading Section" },
+            { english: "soup and nut cream", estonian: "SUPPI JA PÄHKLIKREEMI", category: "Reading Section" },
+            { english: "soup", estonian: "SUPPI", category: "Reading Section" },
+            { english: "nut cream", estonian: "PÄHKLIKREEMI", category: "Reading Section" },
+            { english: "after that", estonian: "PÄRAST SEDA", category: "Reading Section" },
+            { english: "exhibition of homemade breads", estonian: "KODUS VALMISTATUD LEIBADE NÄITUS", category: "Reading Section" },
+            { english: "breads", estonian: "LEIBADE", category: "Reading Section" },
+            { english: "exhibition", estonian: "NÄITUS", category: "Reading Section" },
+            { english: "tried various", estonian: "PROOVISID ERINEVAID", category: "Reading Section" },
+            { english: "became acquainted with recipes", estonian: "TUTVUSID RETSEPTIDEGA", category: "Reading Section" },
+            { english: "with recipes", estonian: "RETSEPTIDEGA", category: "Reading Section" },
+            { english: "folk theater", estonian: "RAHVATEATER", category: "Reading Section" },
+            { english: "presented a play", estonian: "ESITAS NÄIDENDI", category: "Reading Section" },
+            { english: "play/drama", estonian: "NÄIDENDI", category: "Reading Section" },
+            { english: "performed", estonian: "ESINESID", category: "Reading Section" },
+            { english: "then/after that", estonian: "SEEJÄREL", category: "Reading Section" },
+            { english: "decorated Christmas trees", estonian: "EHTISID JÕULUKUUSKE", category: "Reading Section" },
+            { english: "Christmas tree", estonian: "JÕULUKUUSE", category: "Reading Section" },
+            { english: "before the arrival of winter", estonian: "ENNE TALVE SAABUMIST", category: "Reading Section" },
+            { english: "until the arrival of spring", estonian: "KEVADE SAABUMISENI", category: "Reading Section" },
+            { english: "spring", estonian: "KEVAD", category: "Reading Section" },
+            { english: "as spring capital", estonian: "KEVADPEALINNAKS", category: "Reading Section" },
+            { english: "Türi (place name)", estonian: "TÜRI", category: "Reading Section" },
+            { english: "theater and concert hall", estonian: "TEATRI- JA KONTSERDIMAJA", category: "Reading Section" },
+            { english: "hundred years old", estonian: "SAJA-AASTASEKS", category: "Reading Section" },
+            { english: "lived through difficult times", estonian: "LÄBI ELANUD RASKEID AEGU", category: "Reading Section" },
+            { english: "remained/survived", estonian: "PÜSIMA JÄÄNUD", category: "Reading Section" },
+            { english: "designed", estonian: "PROJEKTEERISID", category: "Reading Section" },
+            { english: "in the year", estonian: "AASTAL", category: "Reading Section" },
+            { english: "architects", estonian: "ARHITEKTID", category: "Reading Section" },
+            { english: "the building was completed", estonian: "HOONE VALMIS SAI", category: "Reading Section" },
+            { english: "came to admire", estonian: "KÄISID IMETLEMAS", category: "Reading Section" },
+            { english: "in their opinion", estonian: "NENDE MEELEST", category: "Reading Section" },
+            { english: "rare/unusual", estonian: "HARULDANE", category: "Reading Section" },
+            { english: "throughout Europe", estonian: "KOGU EUROOPAS", category: "Reading Section" },
+            { english: "larger building", estonian: "SUUREM HOONE", category: "Reading Section" },
+            { english: "proud", estonian: "UHKED", category: "Reading Section" },
+            { english: "two parts", estonian: "KAKS OSA", category: "Reading Section" },
+            { english: "on one side", estonian: "ÜHTE POOLDE", category: "Reading Section" },
+            { english: "theater hall", estonian: "TEATRISAAL", category: "Reading Section" },
+            { english: "on the other side concert hall", estonian: "TEISE KONTSERDISAAL", category: "Reading Section" },
+            { english: "concert hall", estonian: "KONTSERDISAAL", category: "Reading Section" },
+            { english: "white hall", estonian: "VALGE SAAL", category: "Reading Section" },
+            { english: "in the center", estonian: "KESKOSAL", category: "Reading Section" },
+            { english: "restaurant", estonian: "RESTORAN", category: "Reading Section" },
+            { english: "winter garden", estonian: "TALVEAIANA", category: "Reading Section" },
+            { english: "red hall", estonian: "PUNANE SAAL", category: "Reading Section" },
+            { english: "salon nights/social evenings", estonian: "SALONGIÕHTUID", category: "Reading Section" },
+            { english: "were placed", estonian: "PAIGUTATI", category: "Reading Section" },
+            { english: "at the opening", estonian: "AVAMISEL", category: "Reading Section" },
+            { english: "sculptor", estonian: "SKULPTOR", category: "Reading Section" },
+            { english: "marble sculptures", estonian: "MARMORKUJUD", category: "Reading Section" },
+            { english: "later", estonian: "HILJEM", category: "Reading Section" },
+            { english: "green hall", estonian: "ROHELINE SAAL", category: "Reading Section" },
+            { english: "in a bombing raid", estonian: "POMMIRÜNNAKUS", category: "Reading Section" },
+            { english: "was destroyed", estonian: "PURUNES", category: "Reading Section" },
+            { english: "completely", estonian: "TÄIELIKULT", category: "Reading Section" },
+            { english: "was rebuilt", estonian: "EHITATI UUESTI ÜLES", category: "Reading Section" },
+            { english: "this time", estonian: "SEEKORD", category: "Reading Section" },
+            { english: "appearance changed", estonian: "VÄLIMUS MUUTUS", category: "Reading Section" },
+            { english: "substantially/thoroughly", estonian: "PÕHJALIKULT", category: "Reading Section" },
+            { english: "construction work was completed", estonian: "EHITUSTÖÖD LÕPETATI", category: "Reading Section" },
+            { english: "grown out of", estonian: "VÄLJA KASVANUD", category: "Reading Section" },
+            { english: "from a small group of actors", estonian: "VÄIKSEST NÄITLEJATE GRUPIST", category: "Reading Section" },
+            { english: "was founded", estonian: "ASUTATI", category: "Reading Section" },
+            { english: "in the century", estonian: "SAJANDIL", category: "Reading Section" },
+            { english: "at first/originally", estonian: "ALGUSES", category: "Reading Section" },
+            { english: "performed musical plays", estonian: "ESITASID LAULUMÄNGE", category: "Reading Section" },
+            { english: "musical plays", estonian: "LAULUMÄNGE", category: "Reading Section" },
+            { english: "comedies", estonian: "KOMÖÖDIAID", category: "Reading Section" },
+            { english: "something more serious", estonian: "TÕSISEMAT", category: "Reading Section" },
+            { english: "began to stage/direct", estonian: "HAKATIGI LAVASTAMA", category: "Reading Section" },
+            { english: "more serious plays", estonian: "TÕSISEMAID NÄIDENDEID", category: "Reading Section" },
+            { english: "plays by Chekhov and Ibsen", estonian: "TŠEHHOVI JA IBSENI NÄIDENDEID", category: "Reading Section" },
+            { english: "dramatic actors", estonian: "DRAAMANÄITLEJAD", category: "Reading Section" },
+            { english: "to drama theater", estonian: "DRAAMATEATRISSE", category: "Reading Section" },
+            { english: "professional music theater", estonian: "KUTSELINE MUUSIKATEATER", category: "Reading Section" },
+            { english: "opera theater", estonian: "OOPERITEATRIKS", category: "Reading Section" },
+            { english: "national opera", estonian: "RAHVUSOOPER", category: "Reading Section" },
+            { english: "season", estonian: "HOOAEG", category: "Reading Section" },
+            { english: "months", estonian: "KUUD", category: "Reading Section" },
+            { english: "from September to June", estonian: "SEPTEMBRIST JUUNINI", category: "Reading Section" },
+            { english: "during the time", estonian: "AJA JOOKSUL", category: "Reading Section" },
+            { english: "performances are given", estonian: "ANTAKSE ETENDUSI", category: "Reading Section" },
+            { english: "performances", estonian: "ETENDUSI", category: "Reading Section" },
+            { english: "classical operas", estonian: "KLASSIKALISI OOPEREID", category: "Reading Section" },
+            { english: "operetta", estonian: "OPERETTE", category: "Reading Section" },
+            { english: "ballets", estonian: "BALLETTE", category: "Reading Section" },
+            { english: "rarely musicals", estonian: "HARVEM MUUSIKALE", category: "Reading Section" },
+            { english: "works people", estonian: "TÖÖTAB INIMEST", category: "Reading Section" },
+            { english: "large hall", estonian: "SUURDE SAALI", category: "Reading Section" },
+            { english: "fits spectators", estonian: "MAHUB PEALTVAATAJAT", category: "Reading Section" },
+            { english: "smaller performances", estonian: "VÄIKSEMAD ETENDUSED", category: "Reading Section" },
+            { english: "take place", estonian: "TOIMUVAD", category: "Reading Section" },
+            { english: "fits up to", estonian: "MAHUB KUNI", category: "Reading Section" },
+            { english: "director", estonian: "LAVASTAJA", category: "Reading Section" },
+            { english: "idea", estonian: "MÕTE", category: "Reading Section" },
+            { english: "to remember", estonian: "MEELES PIDADA", category: "Reading Section" },
+            { english: "had the sculptor make", estonian: "LASI SKULPTORIL VALMISTADA", category: "Reading Section" },
+            { english: "stone plates", estonian: "KIVIST PLAADID", category: "Reading Section" },
+            { english: "footprint", estonian: "JALAJÄLG", category: "Reading Section" },
+            { english: "name", estonian: "NIMI", category: "Reading Section" },
+            { english: "date of birth", estonian: "SÜNNIAEG", category: "Reading Section" },
+            { english: "were placed", estonian: "PANDUD", category: "Reading Section" },
+            { english: "nearby", estonian: "LÄHEDALE", category: "Reading Section" },
+            { english: "on sidewalks", estonian: "KÕNNITEEDELE", category: "Reading Section" },
+            { english: "a stone plate with his own name", estonian: "OMANIMELISE KIVIPLAADI", category: "Reading Section" },
+            { english: "founder", estonian: "ASUTAJA", category: "Reading Section" },
+            { english: "famous singer", estonian: "KUULSA LAULJA", category: "Reading Section" },
+            { english: "were placed on the street", estonian: "PANDI TÄNAVALE", category: "Reading Section" },
+            { english: "installed", estonian: "PAIGALDATUD", category: "Reading Section" },
+            { english: "stone plates", estonian: "KIVIPLAATI", category: "Reading Section" },
+            
+            // Health & Food Section (62)
+            { english: "cranberry", estonian: "JÕHVIKAS", category: "Health & Food Section" },
+            { english: "beautiful red berry", estonian: "ILUS PUNANE MARI", category: "Health & Food Section" },
+            { english: "berry", estonian: "MARI", category: "Health & Food Section" },
+            { english: "people", estonian: "INIMESED", category: "Health & Food Section" },
+            { english: "know well", estonian: "HÄSTI TEAVAD", category: "Health & Food Section" },
+            { english: "grows in a bog/swamp", estonian: "KASVAB SOOS", category: "Health & Food Section" },
+            { english: "bog/swamp", estonian: "SOOS", category: "Health & Food Section" },
+            { english: "cranberry berries", estonian: "JÕHVIKA MARJAD", category: "Health & Food Section" },
+            { english: "quite large", estonian: "PÄRIS SUURED", category: "Health & Food Section" },
+            { english: "leaves", estonian: "LEHED", category: "Health & Food Section" },
+            { english: "small", estonian: "VÄIKESED", category: "Health & Food Section" },
+            { english: "not visible from afar", estonian: "KAUGELT NÄHAGI", category: "Health & Food Section" },
+            { english: "needs for growing", estonian: "KASVAMISEKS VAJA", category: "Health & Food Section" },
+            { english: "air and water", estonian: "ÕHKU JA VETT", category: "Health & Food Section" },
+            { english: "is sufficient/lasts", estonian: "JÄTKUB", category: "Health & Food Section" },
+            { english: "better to grow", estonian: "PAREM KASVADA", category: "Health & Food Section" },
+            { english: "pink flowers", estonian: "ROOSAD ÕIED", category: "Health & Food Section" },
+            { english: "flowers", estonian: "ÕIED", category: "Health & Food Section" },
+            { english: "usually don't see", estonian: "TAVALISELT EI NÄE", category: "Health & Food Section" },
+            { english: "in spring", estonian: "KEVADEL", category: "Health & Food Section" },
+            { english: "rarely in bogs", estonian: "HARVA SOOS", category: "Health & Food Section" },
+            { english: "in autumn", estonian: "SÜGISEL", category: "Health & Food Section" },
+            { english: "people go to pick berries", estonian: "MINNAKSE MARJU KORJAMA", category: "Health & Food Section" },
+            { english: "to pick berries", estonian: "MARJU KORJAMA", category: "Health & Food Section" },
+            { english: "good to pick", estonian: "HEA KORJATA", category: "Health & Food Section" },
+            { english: "at the end of September", estonian: "SEPTEMBRI LÕPUS", category: "Health & Food Section" },
+            { english: "at the end", estonian: "LÕPUS", category: "Health & Food Section" },
+            { english: "berries are ripe", estonian: "MARJAD KÜPSENUD", category: "Health & Food Section" },
+            { english: "actually/really", estonian: "TEGELIKULT", category: "Health & Food Section" },
+            { english: "can pick", estonian: "VÕIB KORJATA", category: "Health & Food Section" },
+            { english: "even in winter", estonian: "ISEGI TALVEL", category: "Health & Food Section" },
+            { english: "been under snow", estonian: "LUME ALL OLNUD", category: "Health & Food Section" },
+            { english: "snow", estonian: "LUME", category: "Health & Food Section" },
+            { english: "with sweet taste", estonian: "MAGUSA MAITSEGA", category: "Health & Food Section" },
+            { english: "with taste/flavor", estonian: "MAITSEGA", category: "Health & Food Section" },
+            { english: "easy to preserve", estonian: "LIHTNE SÄILITADA", category: "Health & Food Section" },
+            { english: "to preserve", estonian: "SÄILITADA", category: "Health & Food Section" },
+            { english: "keep in water", estonian: "HOIDA VEE SEES", category: "Health & Food Section" },
+            { english: "juice", estonian: "MAHLA", category: "Health & Food Section" },
+            { english: "jam", estonian: "MOOSI", category: "Health & Food Section" },
+            { english: "to freezer", estonian: "SÜGAVKÜLMIKUSSE", category: "Health & Food Section" },
+            { english: "help/benefit", estonian: "ABI", category: "Health & Food Section" },
+            { english: "sick", estonian: "HAIGE", category: "Health & Food Section" },
+            { english: "cranberry compote", estonian: "JÕHVIKAMORSS", category: "Health & Food Section" },
+            { english: "lowers fever", estonian: "ALANDAB PALAVIKKU", category: "Health & Food Section" },
+            { english: "fever", estonian: "PALAVIKKU", category: "Health & Food Section" },
+            { english: "throat hurts", estonian: "KURK VALUTAB", category: "Health & Food Section" },
+            { english: "throat", estonian: "KURK", category: "Health & Food Section" },
+            { english: "hurts/aches", estonian: "VALUTAB", category: "Health & Food Section" },
+            { english: "must take", estonian: "TULEB VÕTTA", category: "Health & Food Section" },
+            { english: "tablespoons", estonian: "SUPILUSIKATÄIT", category: "Health & Food Section" },
+            { english: "crush them", estonian: "TEHA NEED KATKI", category: "Health & Food Section" },
+            { english: "crushed/broken", estonian: "KATKI", category: "Health & Food Section" },
+            { english: "mix with honey", estonian: "SEGADA MEEGA", category: "Health & Food Section" },
+            { english: "with honey", estonian: "MEEGA", category: "Health & Food Section" },
+            { english: "mixture", estonian: "SEGU", category: "Health & Food Section" },
+            { english: "eat slowly", estonian: "AEGLASELT SÜÜA", category: "Health & Food Section" },
+            { english: "slowly", estonian: "AEGLASELT", category: "Health & Food Section" },
+            { english: "helps well", estonian: "AITAB HÄSTI", category: "Health & Food Section" },
+            { english: "treats/cures", estonian: "RAVIB", category: "Health & Food Section" },
+            
+            // Additional Common Words (10+)
+            { english: "Ministry of Education and Youth", estonian: "HARIDUS- JA NOORTEAMET", category: "Additional Common Words" },
+            { english: "as an answer", estonian: "VASTUSEKS", category: "Additional Common Words" },
+            { english: "more correct/better", estonian: "ÕIGEM", category: "Additional Common Words" },
+            { english: "fresh", estonian: "VÄRSKE", category: "Additional Common Words" },
+            { english: "needed", estonian: "TARVIS", category: "Additional Common Words" },
+            { english: "can/is able to", estonian: "SAAB", category: "Additional Common Words" },
+            { english: "vacation/rest", estonian: "PUHKUS", category: "Additional Common Words" },
+            { english: "reason/justification", estonian: "PÕHJENDUS", category: "Additional Common Words" },
+            { english: "logically", estonian: "LOOGILISELT", category: "Additional Common Words" },
+            { english: "suitable/appropriate", estonian: "SOBIV", category: "Additional Common Words" }
+        ];
+
+        let currentShowAll = false;
+
+        function sanitizeCategory(category) {
+            return category.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase();
+        }
+
+        // Initialize quiz
+        function initializeQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+            
+            let currentCategory = '';
+            let categoryCount = {};
+            let categoryIndex = {};
+            
+            vocabulary.forEach(word => {
+                if (word.category !== currentCategory) {
+                    currentCategory = word.category;
+                    categoryCount[currentCategory] = 0;
+                    categoryIndex[currentCategory] = 0;
+                    const safeCategory = sanitizeCategory(currentCategory);
+                    
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'category';
+                    categoryDiv.innerHTML = `<div class="category-title">${currentCategory} <span class="category-count"><span class="cat-correct-${safeCategory}">0</span>/<span class="cat-total-${safeCategory}">0</span></span></div>`;
+                    container.appendChild(categoryDiv);
+                }
+                
+                categoryCount[currentCategory]++;
+                
+                const quizDiv = document.createElement('div');
+                quizDiv.className = 'quiz-entry';
+                quizDiv.innerHTML = `
+                    <div class="number">${vocabulary.indexOf(word) + 1}.</div>
+                    <div class="english">${word.english}</div>
+                    <div class="input-wrapper">
+                        <input type="text" class="quiz-input" placeholder="Type Estonian word..." data-answer="${word.estonian.toUpperCase()}" data-category="${word.category}">
+                        <button type="button" class="check-btn">Show answer</button>
+                        <div class="feedback"></div>
+                        <div class="correct-answer">✓ ${word.estonian}</div>
+                    </div>
+                `;
+                
+                container.appendChild(quizDiv);
+                
+                const input = quizDiv.querySelector('.quiz-input');
+                const showButton = quizDiv.querySelector('.check-btn');
+                input.addEventListener('input', checkAnswerEvent);
+                input.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        checkIndividualAnswer(input);
+                    }
+                });
+                showButton.addEventListener('click', e => {
+                    e.preventDefault();
+                    const correctAnswerDiv = input.parentElement.querySelector('.correct-answer');
+                    correctAnswerDiv.classList.add('show');
+                });
+            });
+            
+            // Update category counts
+            Object.keys(categoryCount).forEach(cat => {
+                const safeCategory = sanitizeCategory(cat);
+                document.querySelector(`.cat-total-${safeCategory}`).textContent = categoryCount[cat];
+            });
+            
+            updateStats();
+        }
+
+        function checkAnswerEvent(e) {
+            checkIndividualAnswer(e.target);
+        }
+
+        function checkIndividualAnswer(input) {
+            const feedback = input.parentElement.querySelector('.feedback');
+            const correctAnswerDiv = input.parentElement.querySelector('.correct-answer');
+            const correct = input.dataset.answer;
+            const userAnswer = input.value.toUpperCase().trim();
+            
+            if (userAnswer === '') {
+                input.classList.remove('correct', 'incorrect');
+                feedback.innerHTML = '';
+                correctAnswerDiv.classList.remove('show');
+                updateStats();
+                return;
+            }
+            
+            if (userAnswer === correct) {
+                input.classList.remove('incorrect');
+                input.classList.add('correct');
+                feedback.innerHTML = '✓';
+                feedback.classList.remove('xmark');
+                feedback.classList.add('checkmark');
+                correctAnswerDiv.classList.remove('show');
+            } else {
+                input.classList.remove('correct');
+                input.classList.add('incorrect');
+                feedback.innerHTML = '✗';
+                feedback.classList.remove('checkmark');
+                feedback.classList.add('xmark');
+                if (currentShowAll) {
+                    correctAnswerDiv.classList.add('show');
+                }
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            const inputs = document.querySelectorAll('.quiz-input');
+            let correct = 0;
+            
+            inputs.forEach(input => {
+                if (input.classList.contains('correct')) {
+                    correct++;
+                }
+            });
+            
+            const total = inputs.length;
+            const percent = Math.round((correct / total) * 100);
+            
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('percentCount').textContent = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
+            
+            // Update category counts
+            const categories = {};
+            inputs.forEach(input => {
+                const cat = input.dataset.category;
+                if (!categories[cat]) {
+                    categories[cat] = { total: 0, correct: 0 };
+                }
+                categories[cat].total++;
+                if (input.classList.contains('correct')) {
+                    categories[cat].correct++;
+                }
+            });
+            
+            Object.keys(categories).forEach(cat => {
+                const safeCategory = sanitizeCategory(cat);
+                const elem = document.querySelector(`.cat-correct-${safeCategory}`);
+                if (elem) {
+                    elem.textContent = categories[cat].correct;
+                }
+            });
+        }
+
+        function showAllAnswers() {
+            currentShowAll = !currentShowAll;
+            document.querySelectorAll('.quiz-input').forEach(input => {
+                const correctAnswerDiv = input.parentElement.querySelector('.correct-answer');
+                if (currentShowAll) {
+                    correctAnswerDiv.classList.add('show');
+                } else {
+                    correctAnswerDiv.classList.remove('show');
+                }
+            });
+            const showAllBtn = document.querySelector('.show-all-btn');
+            if (showAllBtn) {
+                showAllBtn.textContent = currentShowAll ? '🙈 Hide Answers' : '👁️ Show All Answers';
+            }
+        }
+
+        function resetAll() {
+            document.querySelectorAll('.quiz-input').forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+                input.parentElement.querySelector('.feedback').innerHTML = '';
+                input.parentElement.querySelector('.correct-answer').classList.remove('show');
+            });
+            currentShowAll = false;
+            const showAllBtn = document.querySelector('.show-all-btn');
+            if (showAllBtn) {
+                showAllBtn.textContent = '👁️ Show All Answers';
+            }
+            updateStats();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+</html>
