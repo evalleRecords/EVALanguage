@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Estonian Speaking Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0b1120 0%, #111827 50%, #1f2937 100%);
+            color: #e5e7eb;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #111827;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.95;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        .content {
+            padding: 30px;
+            background: #0f172a;
+        }
+        
+        .category {
+            margin-bottom: 50px;
+        }
+        
+        .category-title {
+            background: linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+        
+        .category-count {
+            font-size: 0.8em;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .quiz-entry {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #334155;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .quiz-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .quiz-entry:hover {
+            background-color: #172033;
+            padding: 20px;
+            margin: 0 -20px;
+        }
+        
+        .number {
+            flex: 0 0 40px;
+            font-weight: bold;
+            color: #a78bfa;
+            text-align: right;
+            font-size: 1.1em;
+        }
+        
+        .english {
+            flex: 0 0 35%;
+            color: #dbeafe;
+            font-style: italic;
+            font-size: 1em;
+        }
+        
+        .input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+        
+        .quiz-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #475569;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+        }
+        
+        .quiz-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+        }
+        
+        .quiz-input.correct {
+            border-color: #4caf50;
+            background-color: #0f2b1f;
+        }
+        
+        .quiz-input.incorrect {
+            border-color: #f44336;
+            background-color: #2a1416;
+        }
+        
+        .feedback {
+            flex: 0 0 40px;
+            font-size: 1.8em;
+            text-align: center;
+            font-weight: bold;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .checkmark {
+            color: #4caf50;
+            animation: slideIn 0.4s ease;
+        }
+        
+        .xmark {
+            color: #f44336;
+            animation: slideIn 0.4s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .correct-answer {
+            font-size: 0.85em;
+            color: #86efac;
+            font-weight: 600;
+            margin-top: 5px;
+            padding: 5px 10px;
+            background: rgba(20, 83, 45, 0.8);
+            border-radius: 3px;
+            display: none;
+        }
+        
+        .correct-answer.show {
+            display: block;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .show-all-btn {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+        }
+        
+        .show-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .check-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .check-btn:hover {
+            background: #5b6ee0;
+            transform: translateY(-1px);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(148, 163, 184, 0.25);
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-entry {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .input-wrapper {
+                width: 100%;
+            }
+            
+            .english {
+                flex: 1;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇪🇪 Common Estonian Conversation Sentences</h1>
+            <p>Fill in the Estonian word for each English translation</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="correctCount">0</div>
+                    <div>Correct</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCount">0</div>
+                    <div>Total Words</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="percentCount">0%</div>
+                    <div>Progress</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div id="quizContainer"></div>
+            
+            <div class="buttons">
+                <button class="reset-btn" onclick="resetAll()">🔄 Reset All</button>
+                <button class="show-all-btn" onclick="showAllAnswers()">👁️ Show All Answers</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vocabulary data
+        const vocabulary = [
+            //  Minu tavaline esmaspäev
+            { english: "What time do you usually wake up?", estonian: "Mis kell sa tavaliselt ärkad?", category: " Minu tavaline esmaspäev I" },
+            { english: "At eight o’clock.", estonian: "Kell kaheksa.", category: " Minu tavaline esmaspäev I" },
+            { english: "What do you eat and drink in the morning?", estonian: "Mida sa hommikul sööd ja jood?", category: " Minu tavaline esmaspäev I" },
+            { english: "I eat a sandwich and drink coffee with milk.", estonian: "Ma söön võileiba ja joon kohvi piimaga.", category: " Minu tavaline esmaspäev I" },
+            { english: "When do you go to work?", estonian: "Mis kellaks sa tööle lähed?", category: " Minu tavaline esmaspäev I" },
+            { english: "By nine o’clock.", estonian: "Kella üheksaks.", category: " Minu tavaline esmaspäev I" },
+            { english: "When do you get home?", estonian: "Mis kellaks sa koju jõuad?", category: " Minu tavaline esmaspäev I" },
+            { english: "By five o’clock.", estonian: "Kella viieks.", category: " Minu tavaline esmaspäev I" },
+            { english: "When do you go to sleep?", estonian: "Mis kell sa magama lähed?", category: " Minu tavaline esmaspäev I" },
+            { english: "Around ten o’clock.", estonian: "Kella kümne paiku.", category: " Minu tavaline esmaspäev I" },
+            { english: "How many hours do you sleep?", estonian: "Mitu tundi sa magad?", category: " Minu tavaline esmaspäev I" },
+            { english: "Ten hours.", estonian: "Kümme tundi.", category: " Minu tavaline esmaspäev I" },
+            
+            // Writing Section
+            { english: "At what time do you usually wake up?", estonian: "Mis kell sa tavaliselt ärkad?", category: "Minu tavaline esmaspäev II" },
+            { english: "At twelve o’clock.", estonian: "Kell kaksteist.", category: "Minu tavaline esmaspäev II" },
+            { english: "What do you eat and drink in the morning?", estonian: "Mida sa hommikul sööd ja jood?", category: "Minu tavaline esmaspäev II" },
+            { english: "I eat a fancy cake and drink champagne.", estonian: "Ma söön torti ja joon šampust.", category: "Minu tavaline esmaspäev II" },
+            { english: "At what time do you go to work?", estonian: "Mis kellaks sa tööle lähed?", category: "Minu tavaline esmaspäev II" },
+            { english: "By six o’clock in the evening.", estonian: "Kella kuueks õhtul.", category: "Minu tavaline esmaspäev II" },
+            { english: "When do you get home?", estonian: "Mis kellaks sa koju jõuad?", category: "Minu tavaline esmaspäev II" },
+            { english: "By two o’clock at night.", estonian: "Kella kaheks öösel.", category: "Minu tavaline esmaspäev II" },
+            { english: "When do you go to sleep?", estonian: "Mis kell sa magama lähed?", category: "Minu tavaline esmaspäev II" },
+            { english: "By three o’clock at night.", estonian: "Kella kolme paiku.", category: "Minu tavaline esmaspäev II" },
+            { english: "How many hours do you sleep?", estonian: "By three o’clock at night.", category: "Minu tavaline esmaspäev II" },
+            { english: "Nine hours.", estonian: "Üheksa tundi.", category: "Minu tavaline esmaspäev II" },
+
+
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" },
+            { english: "", estonian: "", category: "======" }        
+        ];
+
+        let currentShowAll = false;
+
+        function sanitizeCategory(category) {
+            return category.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').toLowerCase();
+        }
+
+        // Initialize quiz
+        function initializeQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+            
+            let currentCategory = '';
+            let categoryCount = {};
+            let categoryIndex = {};
+            
+            vocabulary.forEach(word => {
+                if (word.category !== currentCategory) {
+                    currentCategory = word.category;
+                    categoryCount[currentCategory] = 0;
+                    categoryIndex[currentCategory] = 0;
+                    const safeCategory = sanitizeCategory(currentCategory);
+                    
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'category';
+                    categoryDiv.innerHTML = `<div class="category-title">${currentCategory} <span class="category-count"><span class="cat-correct-${safeCategory}">0</span>/<span class="cat-total-${safeCategory}">0</span></span></div>`;
+                    container.appendChild(categoryDiv);
+                }
+                
+                categoryCount[currentCategory]++;
+                
+                const quizDiv = document.createElement('div');
+                quizDiv.className = 'quiz-entry';
+                quizDiv.innerHTML = `
+                    <div class="number">${vocabulary.indexOf(word) + 1}.</div>
+                    <div class="english">${word.english}</div>
+                    <div class="input-wrapper">
+                        <input type="text" class="quiz-input" placeholder="Type Estonian word..." data-answer="${word.estonian.toUpperCase()}" data-category="${word.category}">
+                        <button type="button" class="check-btn">Show answer</button>
+                        <div class="feedback"></div>
+                        <div class="correct-answer">✓ ${word.estonian}</div>
+                    </div>
+                `;
+                
+                container.appendChild(quizDiv);
+                
+                const input = quizDiv.querySelector('.quiz-input');
+                const showButton = quizDiv.querySelector('.check-btn');
+                input.addEventListener('input', checkAnswerEvent);
+                input.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        checkIndividualAnswer(input);
+                    }
+                });
+                showButton.addEventListener('click', e => {
+                    e.preventDefault();
+                    const correctAnswerDiv = input.parentElement.querySelector('.correct-answer');
+                    correctAnswerDiv.classList.add('show');
+                });
+            });
+            
+            // Update category counts
+            Object.keys(categoryCount).forEach(cat => {
+                const safeCategory = sanitizeCategory(cat);
+                document.querySelector(`.cat-total-${safeCategory}`).textContent = categoryCount[cat];
+            });
+            
+            updateStats();
+        }
+
+        function normalizeAnswer(value) {
+            return String(value || '')
+                .toLowerCase()
+                .normalize('NFKC')
+                .replace(/[^\p{L}\p{N}\s]/gu, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function checkAnswerEvent(e) {
+            checkIndividualAnswer(e.target);
+        }
+
+        function checkIndividualAnswer(input) {
+            const feedback = input.parentElement.querySelector('.feedback');
+            const correctAnswerDiv = input.parentElement.querySelector('.correct-answer');
+            const correct = input.dataset.answer;
+            const userAnswer = normalizeAnswer(input.value);
+            const normalizedCorrect = normalizeAnswer(correct);
+            
+            if (userAnswer === '') {
+                input.classList.remove('correct', 'incorrect');
+                feedback.innerHTML = '';
+                correctAnswerDiv.classList.remove('show');
+                updateStats();
+                return;
+            }
+            
+            if (userAnswer === normalizedCorrect) {
+                input.classList.remove('incorrect');
+                input.classList.add('correct');
+                feedback.innerHTML = '✓';
+                feedback.classList.remove('xmark');
+                feedback.classList.add('checkmark');
+                correctAnswerDiv.classList.remove('show');
+            } else {
+                input.classList.remove('correct');
+                input.classList.add('incorrect');
+                feedback.innerHTML = '✗';
+                feedback.classList.remove('checkmark');
+                feedback.classList.add('xmark');
+                if (currentShowAll) {
+                    correctAnswerDiv.classList.add('show');
+                }
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            const inputs = document.querySelectorAll('.quiz-input');
+            let correct = 0;
+            
+            inputs.forEach(input => {
+                if (input.classList.contains('correct')) {
+                    correct++;
+                }
+            });
+            
+            const total = inputs.length;
+            const percent = Math.round((correct / total) * 100);
+            
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('percentCount').textContent = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
+            
+            // Update category counts
+            const categories = {};
+            inputs.forEach(input => {
+                const cat = input.dataset.category;
+                if (!categories[cat]) {
+                    categories[cat] = { total: 0, correct: 0 };
+                }
+                categories[cat].total++;
+                if (input.classList.contains('correct')) {
+                    categories[cat].correct++;
+                }
+            });
+            
+            Object.keys(categories).forEach(cat => {
+                const safeCategory = sanitizeCategory(cat);
+                const elem = document.querySelector(`.cat-correct-${safeCategory}`);
+                if (elem) {
+                    elem.textContent = categories[cat].correct;
+                }
+            });
+        }
+
+        function showAllAnswers() {
+            currentShowAll = !currentShowAll;
+            document.querySelectorAll('.quiz-input').forEach(input => {
+                const correctAnswerDiv = input.parentElement.querySelector('.correct-answer');
+                if (currentShowAll) {
+                    correctAnswerDiv.classList.add('show');
+                } else {
+                    correctAnswerDiv.classList.remove('show');
+                }
+            });
+            const showAllBtn = document.querySelector('.show-all-btn');
+            if (showAllBtn) {
+                showAllBtn.textContent = currentShowAll ? '🙈 Hide Answers' : '👁️ Show All Answers';
+            }
+        }
+
+        function resetAll() {
+            document.querySelectorAll('.quiz-input').forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+                input.parentElement.querySelector('.feedback').innerHTML = '';
+                input.parentElement.querySelector('.correct-answer').classList.remove('show');
+            });
+            currentShowAll = false;
+            const showAllBtn = document.querySelector('.show-all-btn');
+            if (showAllBtn) {
+                showAllBtn.textContent = '👁️ Show All Answers';
+            }
+            updateStats();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+</html>
