@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EYE ESTONIAN TEACHER</title>
+  <style>
+    :root {
+      --bg-1: #0f172a;
+      --bg-2: #111827;
+      --panel: rgba(15, 23, 42, 0.82);
+      --panel-soft: rgba(148, 163, 184, 0.12);
+      --surface: rgba(15, 23, 42, 0.7);
+      --surface-strong: #1e293b;
+      --text: #e2e8f0;
+      --text-soft: #cbd5e1;
+      --muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.18);
+      --primary: #38bdf8;
+      --primary-strong: #0ea5e9;
+      --accent: #a78bfa;
+      --button-text: #f8fafc;
+      --input-bg: rgba(15, 23, 42, 0.55);
+      --shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 28px 18px;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(167, 139, 250, 0.22), transparent 28%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      color: var(--text);
+      font-family: "Segoe UI", "DejaVu Sans", Arial, sans-serif;
+    }
+
+    .app {
+      width: min(760px, 100%);
+      min-height: 610px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 20px 18px 18px;
+      backdrop-filter: blur(14px);
+    }
+
+    .topic-label,
+    .section-label,
+    .answer-label {
+      color: var(--text-soft);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      margin: 0 0 8px;
+      display: block;
+    }
+
+    select,
+    textarea,
+    button,
+    input {
+      font-family: "Segoe UI", "DejaVu Sans", Arial, sans-serif;
+      font-size: 13px;
+    }
+
+    .topic-select {
+      width: 100%;
+      height: 42px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--input-bg);
+      color: var(--text);
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      margin-bottom: 14px;
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .english-toggle,
+    .random-toggle,
+    .shadowing-toggle,
+    .role-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-soft);
+      font-size: 12px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 10px;
+    }
+
+    .english-toggle input[type="checkbox"],
+    .random-toggle input[type="checkbox"],
+    .shadowing-toggle input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+    }
+
+    .role-toggle {
+      display: inline-flex;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+    }
+
+    .role-option {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 600;
+      min-width: 110px;
+      box-shadow: none;
+    }
+
+    .role-option.active {
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.22), rgba(14, 165, 233, 0.12));
+      border-color: rgba(56, 189, 248, 0.5);
+      color: var(--text);
+    }
+
+    .random-toggle {
+      margin-left: auto;
+    }
+
+    .assistant-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .teacher-help {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      margin-left: 8px;
+      border: 1px solid var(--primary);
+      border-radius: 50%;
+      color: var(--primary);
+      cursor: help;
+      user-select: none;
+      position: relative;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .teacher-help::before {
+      content: '?';
+    }
+
+    .teacher-help::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 8px);
+      transform: translateX(-50%);
+      background: rgba(19, 24, 35, 0.96);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.12s ease-in-out;
+      z-index: 10;
+    }
+
+    .teacher-help:hover::after,
+    .teacher-help:focus-visible::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .speed-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+
+    .speed-slider {
+      width: 180px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .assistant-box,
+    .answer-box {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.65);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      resize: vertical;
+    }
+
+    .assistant-box {
+      height: 235px;
+      font-family: "Consolas", "DejaVu Sans Mono", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .answer-label {
+      margin-top: 2px;
+    }
+
+    .answer-box {
+      min-height: 96px;
+      font-family: "Consolas", "DejaVu Sans Mono", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(59,130,246,0.25), rgba(14,165,233,0.12));
+      color: var(--button-text);
+      min-height: 34px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 8px 18px rgba(14, 165, 233, 0.12);
+      letter-spacing: 0.02em;
+      font-weight: 600;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+      border-color: rgba(125, 211, 252, 0.4);
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-small { width: 80px; min-width: 80px; padding: 7px 8px; font-size: 11px; }
+    .btn-medium { width: 136px; min-width: 136px; padding: 7px 8px; font-size: 11px; }
+    .btn-large { width: 170px; min-width: 170px; padding: 7px 8px; font-size: 11px; }
+    .btn-stop { width: 30px; min-width: 30px; padding: 7px 0; font-size: 11px; }
+
+    .shadowing-toggle {
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        padding: 16px 12px;
+      }
+
+      .speed-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .speed-slider {
+        flex: 1;
+      }
+
+      .button-row {
+        gap: 8px;
+      }
+
+      .btn-medium, .btn-large, .btn-small {
+        width: auto;
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <label class="topic-label" for="topicSelect">Select your topic</label>
+    <select id="topicSelect" class="topic-select"></select>
+
+    <div class="top-row">
+      <div class="english-toggle">
+        <span>Enable English TTS:</span>
+        <input id="enableEnglishCheckbox" type="checkbox" />
+      </div>
+
+      <label class="random-toggle" for="enableRandomTopic">
+        <input id="enableRandomTopic" type="checkbox" />
+        <span>Enable Random Topic</span>
+      </label>
+
+      <label class="random-toggle" for="autoShadowing" style="margin-left: 0;">
+        <input id="autoShadowing" type="checkbox" />
+        <span>Enable Shadowing</span>
+      </label>
+    </div>
+
+    <div class="assistant-row">
+      <div style="display:flex; align-items:center;">
+        <span class="section-label">Teacher says</span>
+        <span class="teacher-help" tabindex="0" data-tooltip="English translation"></span>
+      </div>
+      <div class="speed-group">
+        <span class="section-label" style="margin:0;">speed</span>
+        <input id="speedSlider" class="speed-slider" type="range" min="0" max="100" value="33" />
+        <button id="resetSpeedButton" type="button">Reset Spd</button>
+      </div>
+    </div>
+
+    <div class="role-toggle" aria-label="Practice role selector">
+      <button type="button" class="role-option active" data-role="answerer" aria-pressed="true">Teacher asks / You answer</button>
+      <button type="button" class="role-option" data-role="questioner" aria-pressed="false">You ask / Teacher answers</button>
+    </div>
+    <div id="roleStatus" class="section-label" style="margin: 0 0 8px; color: var(--primary);">Teacher asks • you answer</div>
+
+    <textarea id="assistantText" class="assistant-box" readonly></textarea>
+
+    <label class="answer-label" for="sayInEstonian">Say in Estonian</label>
+    <textarea id="sayInEstonian" class="answer-box" readonly placeholder="Select a topic and press START QUESTION to practice."></textarea>
+
+    <label class="answer-label" for="userAnswer">My Estonian answer</label>
+    <textarea id="userAnswer" class="answer-box" placeholder="Type your Estonian answer here..."></textarea>
+
+    <div class="button-row" style="margin-top: 18px;">
+      <button id="questionButton" class="btn-small" type="button">START PRACTICE</button>
+      <button id="previousQuestion" class="btn-small" type="button">PREVIOUS</button>
+      <button id="nextQuestion" class="btn-small" type="button">NEXT</button>
+      <button id="repeatQuestion" class="btn-small" type="button">REPEAT QUESTION</button>
+      <button id="answerButton" class="btn-small" type="button">CHECK ANSWER</button>
+      <button id="repeatAnswerButton" class="btn-small" type="button">REPEAT ANSWER</button>
+      <button id="giveAnswerButton" class="btn-small" type="button">GIVE ME ANSWER</button>
+      <button id="playMemorizationButton" class="btn-small" type="button">PLAY MEMO</button>
+      <button id="repeatMemoButton" class="btn-small" type="button" disabled>REPEAT MEMO</button>
+      <button id="stopMemoButton" class="btn-stop" type="button" disabled>X</button>
+    </div>
+  </div>
+
+  <script>
+    let topicList = [];
+    let topicContent = {};
+
+    async function loadTopicsFromBackend() {
+      try {
+        const response = await fetch('http://localhost:8000/api/topics');
+        if (!response.ok) {
+          throw new Error(`Failed to load topics: ${response.status}`);
+        }
+        const data = await response.json();
+        topicList = data.topicList || [];
+        topicContent = data.topicContent || {};
+      } catch (error) {
+        console.error('Unable to load topics from backend:', error);
+        topicList = [];
+        topicContent = {};
+      }
+    }
+
+    const state = {
+      activeTopic: null,
+      currentQaIndex: -1,
+      qaThreadActive: false,
+      answerCheckInProgress: false,
+      answerCheckCooldownUntil: 0,
+      lastAnswerCheckKey: '',
+      lastAnswerCheckAt: 0,
+      answerAudioInProgress: false,
+      playMemorizationThreadActive: false,
+      shadowingWaiting: false,
+      currentMemoLineData: null,
+      repeatMemoThreadActive: false,
+      resolveShadowingContinue: null,
+      practiceRole: 'answerer'
+    };
+
+    const topicSelect = document.getElementById('topicSelect');
+    const assistantText = document.getElementById('assistantText');
+    const sayInEstonian = document.getElementById('sayInEstonian');
+    const userAnswer = document.getElementById('userAnswer');
+    const speedSlider = document.getElementById('speedSlider');
+    const questionButton = document.getElementById('questionButton');
+    const nextQuestion = document.getElementById('nextQuestion');
+    const previousQuestion = document.getElementById('previousQuestion');
+    const playMemorizationButton = document.getElementById('playMemorizationButton');
+    const repeatMemoButton = document.getElementById('repeatMemoButton');
+    const stopMemoButton = document.getElementById('stopMemoButton');
+    const repeatQuestion = document.getElementById('repeatQuestion');
+    const answerButton = document.getElementById('answerButton');
+    const repeatAnswerButton = document.getElementById('repeatAnswerButton');
+    const giveAnswerButton = document.getElementById('giveAnswerButton');
+    const autoShadowing = document.getElementById('autoShadowing');
+    const enableEnglishCheckbox = document.getElementById('enableEnglishCheckbox');
+    const enableRandomTopic = document.getElementById('enableRandomTopic');
+    const resetSpeedButton = document.getElementById('resetSpeedButton');
+
+    function logText(text) {
+      assistantText.value += text;
+      assistantText.scrollTop = assistantText.scrollHeight;
+    }
+
+    function clearText() {
+      assistantText.value = '';
+    }
+
+    function getCurrentLineData() {
+      if (!state.activeTopic || !(state.activeTopic in topicContent)) {
+        return null;
+      }
+
+      const conversationLines = topicContent[state.activeTopic] || [];
+      if (!(0 <= state.currentQaIndex && state.currentQaIndex < conversationLines.length)) {
+        return null;
+      }
+
+      return conversationLines[state.currentQaIndex];
+    }
+
+    function updateRoleStatus() {
+      const roleStatus = document.getElementById('roleStatus');
+      if (!roleStatus) return;
+
+      if (state.practiceRole === 'questioner') {
+        roleStatus.textContent = 'You ask • teacher answers';
+        return;
+      }
+
+      roleStatus.textContent = 'Teacher asks • you answer';
+    }
+
+    function normalizeAnswerText(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zäöüõšž0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function normalizeSpeechText(value) {
+      return normalizeAnswerText(value)
+        .replace(/\s+[.!?]+$/g, '')
+        .replace(/[.!?]+$/g, '')
+        .trim();
+    }
+
+    function getExpectedEstonianAnswer() {
+      const currentLine = getCurrentLineData();
+      if (!currentLine) {
+        return '';
+      }
+
+      const [estonianQuestion, estonianAnswer, englishQuestion, englishAnswer] = currentLine;
+      return state.practiceRole === 'questioner' ? estonianQuestion : estonianAnswer;
+    }
+
+    function getTeacherResponseText() {
+      const currentLine = getCurrentLineData();
+      if (!currentLine) {
+        return '';
+      }
+
+      const [estonianQuestion, estonianAnswer] = currentLine;
+      return estonianAnswer;
+    }
+
+    function updatePromptSentence() {
+      const currentLine = getCurrentLineData();
+      if (!currentLine) {
+        const waitingMessage = state.practiceRole === 'questioner'
+          ? 'Teacher is waiting for you to ask.'
+          : 'Teacher says: Select a topic and press START QUESTION to practice.';
+        assistantText.value = waitingMessage;
+        sayInEstonian.value = 'Select a topic and press START QUESTION to practice.';
+        userAnswer.value = '';
+        userAnswer.placeholder = 'Type your Estonian answer here...';
+        const teacherHelp = document.querySelector('.teacher-help');
+        if (teacherHelp) teacherHelp.dataset.tooltip = 'English translation';
+        return;
+      }
+
+      const [estonianQuestion, estonianAnswer, englishQuestion, englishAnswer] = currentLine;
+      const teacherSaysEstonian = state.practiceRole === 'questioner' ? estonianAnswer : estonianQuestion;
+      const teacherSaysEnglish = state.practiceRole === 'questioner' ? englishAnswer : englishQuestion;
+      const englishPrompt = state.practiceRole === 'questioner' ? englishQuestion : englishAnswer;
+
+      assistantText.value = state.practiceRole === 'questioner'
+        ? 'Teacher is waiting for you to ask.'
+        : `Teacher says: ${teacherSaysEstonian}`;
+      sayInEstonian.value = `Say in Estonian: ${englishPrompt}`;
+      userAnswer.value = '';
+      userAnswer.placeholder = 'Type your Estonian answer here...';
+
+      const teacherHelp = document.querySelector('.teacher-help');
+      if (teacherHelp) {
+        teacherHelp.dataset.tooltip = teacherSaysEnglish || 'English translation';
+      }
+
+      window.setTimeout(() => {
+        userAnswer.focus();
+        userAnswer.select();
+      }, 50);
+    }
+
+    function setButtonState(button, enabled) {
+      button.disabled = !enabled;
+    }
+
+    function _set_qa_buttons_state(enabled) {
+      setButtonState(questionButton, enabled);
+      setButtonState(nextQuestion, enabled);
+      setButtonState(repeatQuestion, enabled);
+      setButtonState(giveAnswerButton, enabled);
+    }
+
+    const ttsPlaybackCache = {
+      lastKey: '',
+      lastAt: 0
+    };
+    let activePlaybackAudio = null;
+
+    function stopActivePlaybackAudio() {
+      if (activePlaybackAudio) {
+        try {
+          activePlaybackAudio.pause();
+          activePlaybackAudio.currentTime = 0;
+        } catch (error) {
+          // ignore browser playback cleanup errors
+        }
+        activePlaybackAudio = null;
+      }
+    }
+
+    function getCurrentTtsSpeeds() {
+      const scaleValue = Number(speedSlider.value);
+      const tartunlpApiSpeed = 0.5 + (scaleValue / 100) * 1.5;
+      const gttsSlow = scaleValue <= 30;
+      return { tartunlpApiSpeed, gttsSlow };
+    }
+
+    function getBackendBaseUrl() {
+      const currentUrl = window.location.href;
+      if (currentUrl.startsWith('http://') || currentUrl.startsWith('https://')) {
+        return new URL('.', currentUrl).origin;
+      }
+      return 'http://localhost:8000';
+    }
+
+    async function playGeneratedAudio(text, lang = 'et', speaker = 'mari', speed = 1.0, slow = false) {
+      const safeText = String(text || '').trim();
+      if (!safeText) return;
+
+      const normalizedText = normalizeSpeechText(safeText);
+      const audioKey = normalizedText;
+      const now = Date.now();
+      if (audioKey === ttsPlaybackCache.lastKey && (now - ttsPlaybackCache.lastAt) < 1800) {
+        return;
+      }
+      ttsPlaybackCache.lastKey = audioKey;
+      ttsPlaybackCache.lastAt = now;
+
+      const backendBaseUrl = getBackendBaseUrl();
+      const response = await fetch(`${backendBaseUrl}/api/tts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: safeText, lang, speaker, speed, slow })
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`TTS request failed: ${errorBody}`);
+      }
+
+      const data = await response.json();
+      const audioUrl = data.url.startsWith('http') ? data.url : `${backendBaseUrl}${data.url}`;
+      stopActivePlaybackAudio();
+      const audio = new Audio(audioUrl);
+      activePlaybackAudio = audio;
+      audio.volume = 1;
+      await new Promise((resolve) => {
+        audio.onended = () => {
+          if (activePlaybackAudio === audio) {
+            activePlaybackAudio = null;
+          }
+          resolve();
+        };
+        audio.onerror = () => {
+          if (activePlaybackAudio === audio) {
+            activePlaybackAudio = null;
+          }
+          resolve();
+        };
+        audio.play().catch(() => {
+          if (activePlaybackAudio === audio) {
+            activePlaybackAudio = null;
+          }
+          resolve();
+        });
+      });
+    }
+
+    async function estonian_tts_tartunlp(text, speaker = 'mari', api_speed = 1.0) {
+      const safeText = String(text || '').trim();
+      if (!safeText) return;
+      await playGeneratedAudio(safeText, 'et', speaker, api_speed, false);
+    }
+
+    function playTone(frequency = 880, duration = 0.18, volume = 0.12) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+
+      const audioContext = new AudioCtx();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.value = frequency;
+      gainNode.gain.value = volume;
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + duration);
+      setTimeout(() => audioContext.close(), duration * 1000 + 50);
+    }
+
+    function playSuccessTone() {
+      playTone(740, 0.10, 0.12);
+      setTimeout(() => playTone(980, 0.12, 0.10), 90);
+    }
+
+    function playFailureTone() {
+      playTone(220, 0.18, 0.08);
+    }
+
+    async function english_tts_gtts(text, use_slow = false) {
+      const safeText = String(text || '').trim();
+      if (!safeText) return;
+      await playGeneratedAudio(safeText, 'en', 'mari', 1.0, use_slow);
+    }
+
+    async function _perform_qa_playback(topicName, qaIndex, tartunlpSpeedToUse, gttsSlowToUse) {
+      try {
+        if (!topicName || !topicContent[topicName] || !topicContent[topicName].length) {
+          assistantText.value = 'Teacher says: Select a topic and press START QUESTION to practice.';
+          return;
+        }
+
+        const conversationLines = topicContent[topicName];
+        if (!(0 <= qaIndex && qaIndex < conversationLines.length)) {
+          assistantText.value = 'Teacher says: Question not available.';
+          return;
+        }
+
+        const currentLine = conversationLines[qaIndex];
+        const estonianQuestion = currentLine[0];
+        const estonianAnswer = currentLine[1];
+        const englishQuestionTranslation = currentLine[2];
+        const englishAnswerTranslation = currentLine[3];
+
+        const isQuestionerMode = state.practiceRole === 'questioner';
+        const playbackText = isQuestionerMode ? estonianAnswer : estonianQuestion;
+        const englishTextToShow = isQuestionerMode ? englishAnswerTranslation : englishQuestionTranslation;
+
+        if (isQuestionerMode) {
+          assistantText.value = 'Teacher is waiting for you to ask.';
+        } else {
+          assistantText.value = `Teacher says: ${playbackText}`;
+        }
+        const teacherHelp = document.querySelector('.teacher-help');
+        if (teacherHelp) {
+          teacherHelp.dataset.tooltip = englishTextToShow || 'English translation';
+        }
+
+        if (!isQuestionerMode) {
+          await estonian_tts_tartunlp(playbackText, 'mari', tartunlpSpeedToUse);
+        }
+
+        if (enableEnglishCheckbox.checked) {
+          await english_tts_gtts(englishTextToShow, gttsSlowToUse);
+        }
+      } catch (error) {
+        console.error(error);
+        assistantText.value = `Teacher says: ${error.message || 'Playback failed.'}`;
+      } finally {
+        state.qaThreadActive = false;
+        _set_qa_buttons_state(true);
+      }
+    }
+
+    function _trigger_qa_playback() {
+      if (state.qaThreadActive) {
+        logText('Q&A playback already in progress.\n');
+        return;
+      }
+
+      if (!state.activeTopic || state.currentQaIndex < 0) {
+        logText('No active topic or question index.\n');
+        return;
+      }
+
+      const { tartunlpApiSpeed, gttsSlow } = getCurrentTtsSpeeds();
+      state.qaThreadActive = true;
+      _set_qa_buttons_state(false);
+      updatePromptSentence();
+      window.setTimeout(() => {
+        userAnswer.focus();
+        userAnswer.select();
+      }, 150);
+      _perform_qa_playback(state.activeTopic, state.currentQaIndex, tartunlpApiSpeed, gttsSlow);
+    }
+
+    function on_start_question_click() {
+      if (state.qaThreadActive) {
+        logText('Question presentation already in progress...\n');
+        return;
+      }
+
+      clearText();
+
+      if (enableRandomTopic.checked && topicList.length) {
+        const randomTopic = topicList[Math.floor(Math.random() * topicList.length)];
+        topicSelect.value = randomTopic;
+        logText(`Random topic selected: ${randomTopic}\n`);
+      }
+
+      const currentTopicName = topicSelect.value;
+      if (!currentTopicName || !(currentTopicName in topicContent)) {
+        logText('Please select a valid topic from the list first.\n');
+        return;
+      }
+
+      state.activeTopic = currentTopicName;
+      state.currentQaIndex = 0;
+
+      const conversationLines = topicContent[currentTopicName];
+      if (!conversationLines || state.currentQaIndex >= conversationLines.length) {
+        logText(`No questions available for topic: ${currentTopicName}.\n`);
+        state.activeTopic = null;
+        state.currentQaIndex = -1;
+        return;
+      }
+
+      _trigger_qa_playback();
+    }
+
+    function on_previous_question_click() {
+      if (state.answerCheckInProgress || state.answerAudioInProgress || state.qaThreadActive) {
+        return;
+      }
+
+      clearText();
+
+      if (state.qaThreadActive) {
+        logText('Question presentation already in progress...\n');
+        return;
+      }
+
+      if (!state.activeTopic || state.currentQaIndex === -1) {
+        logText("Please click 'START QUESTION' to begin a topic first.\n");
+        return;
+      }
+
+      if (state.currentQaIndex <= 0) {
+        logText(`You are already at the first question for topic: ${state.activeTopic}.\n`);
+        return;
+      }
+
+      state.currentQaIndex -= 1;
+      _trigger_qa_playback();
+    }
+
+    function on_next_question_click() {
+      if (state.answerCheckInProgress || state.answerAudioInProgress) {
+        return;
+      }
+
+      clearText();
+
+      if (state.shadowingWaiting && state.playMemorizationThreadActive) {
+        if (state.resolveShadowingContinue) {
+          const resolver = state.resolveShadowingContinue;
+          state.resolveShadowingContinue = null;
+          resolver();
+        }
+        return;
+      }
+
+      if (state.qaThreadActive) {
+        logText('Question presentation already in progress...\n');
+        return;
+      }
+
+      if (!state.activeTopic || state.currentQaIndex === -1) {
+        logText("Please click 'START QUESTION' to begin a topic first.\n");
+        return;
+      }
+
+      state.currentQaIndex += 1;
+      const conversationLines = topicContent[state.activeTopic] || [];
+      if (state.currentQaIndex >= conversationLines.length) {
+        logText(`End of questions for topic: ${state.activeTopic}.\nSelect 'START QUESTION' for this or another topic.\n`);
+        state.activeTopic = null;
+        state.currentQaIndex = -1;
+        return;
+      }
+
+      _trigger_qa_playback();
+    }
+
+    async function _play_memorization_task(currentTopicName, tartunlpSpeedToUse, gttsSlowToUse, isShadowingEnabled) {
+      state.playMemorizationThreadActive = true;
+      logText(`Playing memorization for topic: ${currentTopicName}\n\n`);
+
+      try {
+        const conversationLinesForSelectedTopic = topicContent[currentTopicName];
+        for (const conversationLine of conversationLinesForSelectedTopic) {
+          if (!state.playMemorizationThreadActive) break;
+
+          const [estonianQuestion, estonianAnswer, englishQuestionTranslation, englishAnswerTranslation] = conversationLine;
+          state.currentMemoLineData = [estonianQuestion, estonianAnswer, englishQuestionTranslation, englishAnswerTranslation];
+
+          logText(`Estonian Q: ${estonianQuestion}\n`);
+          await estonian_tts_tartunlp(estonianQuestion, 'mari', tartunlpSpeedToUse);
+
+          logText(`Estonian A: ${estonianAnswer}\n`);
+          await estonian_tts_tartunlp(estonianAnswer, 'vesta', tartunlpSpeedToUse);
+
+          if (enableEnglishCheckbox.checked) {
+            logText(`Translate Q: ${englishQuestionTranslation}\n`);
+            await english_tts_gtts(englishQuestionTranslation, gttsSlowToUse);
+
+            logText(`Translate A: ${englishAnswerTranslation}\n`);
+            await english_tts_gtts(englishAnswerTranslation, gttsSlowToUse);
+          }
+
+          logText('---\n');
+
+          if (!isShadowingEnabled) {
+            state.shadowingWaiting = true;
+            setButtonState(nextQuestion, true);
+            setButtonState(repeatMemoButton, true);
+            logText('Shadowing: Paused. Click NEXT to continue or RPT MEMO to repeat.\n');
+
+            await new Promise(resolve => {
+              state.resolveShadowingContinue = resolve;
+            });
+
+            if (!state.playMemorizationThreadActive) break;
+
+            setButtonState(nextQuestion, false);
+            setButtonState(repeatMemoButton, false);
+            state.shadowingWaiting = false;
+            logText('Shadowing: Resuming...\n');
+          }
+        }
+
+        logText('\nMemorization playback complete.\n');
+      } catch (error) {
+        console.error(error);
+        logText(`Error during playback: ${error}\n`);
+      } finally {
+        state.playMemorizationThreadActive = false;
+        state.shadowingWaiting = false;
+        state.currentMemoLineData = null;
+        state.resolveShadowingContinue = null;
+
+        setButtonState(playMemorizationButton, true);
+        setButtonState(autoShadowing, true);
+        setButtonState(repeatMemoButton, false);
+        setButtonState(stopMemoButton, false);
+        setButtonState(enableEnglishCheckbox, true);
+        _set_qa_buttons_state(true);
+      }
+    }
+
+    function on_play_memorization_click() {
+      if (state.playMemorizationThreadActive) {
+        state.playMemorizationThreadActive = false;
+        state.shadowingWaiting = false;
+        if (state.resolveShadowingContinue) {
+          const resolver = state.resolveShadowingContinue;
+          state.resolveShadowingContinue = null;
+          resolver();
+        }
+        setButtonState(stopMemoButton, false);
+        logText('Restarting memorization playback...\n');
+      }
+
+      clearText();
+
+      if (enableRandomTopic.checked && topicList.length) {
+        const randomTopic = topicList[Math.floor(Math.random() * topicList.length)];
+        topicSelect.value = randomTopic;
+        logText(`Random topic for memorization: ${randomTopic}\n`);
+      }
+
+      const currentTopicName = topicSelect.value;
+      if (!currentTopicName || !(currentTopicName in topicContent)) {
+        logText('Please select a valid topic from the list first.\n');
+        return;
+      }
+
+      const isShadowingChecked = autoShadowing.checked;
+      const { tartunlpApiSpeed, gttsSlow } = getCurrentTtsSpeeds();
+
+      state.shadowingWaiting = !isShadowingChecked;
+      setButtonState(playMemorizationButton, false);
+      setButtonState(autoShadowing, false);
+      setButtonState(questionButton, false);
+      setButtonState(repeatQuestion, false);
+      setButtonState(giveAnswerButton, false);
+      setButtonState(nextQuestion, false);
+      setButtonState(stopMemoButton, true);
+      setButtonState(repeatMemoButton, false);
+
+      _play_memorization_task(currentTopicName, tartunlpApiSpeed, gttsSlow, isShadowingChecked);
+    }
+
+    function on_stop_memo_click() {
+      if (state.playMemorizationThreadActive) {
+        state.playMemorizationThreadActive = false;
+        state.shadowingWaiting = false;
+        if (state.resolveShadowingContinue) {
+          const resolver = state.resolveShadowingContinue;
+          state.resolveShadowingContinue = null;
+          resolver();
+        }
+        setButtonState(stopMemoButton, false);
+        logText('Stopping memorization playback...\n');
+      }
+    }
+
+    async function _perform_single_memo_line_playback(lineData, tartunlpSpeedToUse, gttsSlowToUse) {
+      state.repeatMemoThreadActive = true;
+      setButtonState(nextQuestion, false);
+      setButtonState(repeatMemoButton, false);
+
+      try {
+        const [estQ, estA, engQ, engA] = lineData;
+        logText('Repeating...\nEstonian Q: ' + estQ + '\n');
+        await estonian_tts_tartunlp(estQ, 'mari', tartunlpSpeedToUse);
+
+        logText(`Estonian A: ${estA}\n`);
+        await estonian_tts_tartunlp(estA, 'vesta', tartunlpSpeedToUse);
+
+        if (enableEnglishCheckbox.checked) {
+          logText(`Translate Q: ${engQ}\n`);
+          await english_tts_gtts(engQ, gttsSlowToUse);
+
+          logText(`Translate A: ${engA}\n`);
+          await english_tts_gtts(engA, gttsSlowToUse);
+        }
+
+        logText('---\nShadowing: Paused. Click NEXT to continue or RPT MEMO to repeat.\n');
+      } catch (error) {
+        console.error(error);
+        logText(`Error during repeat: ${error}\n`);
+      } finally {
+        state.repeatMemoThreadActive = false;
+        if (state.playMemorizationThreadActive && state.shadowingWaiting) {
+          setButtonState(nextQuestion, true);
+          setButtonState(repeatMemoButton, true);
+        }
+      }
+    }
+
+    function on_repeat_memo_click() {
+      if (state.repeatMemoThreadActive) {
+        return;
+      }
+
+      if (!(state.playMemorizationThreadActive && state.shadowingWaiting && state.currentMemoLineData)) {
+        return;
+      }
+
+      const { tartunlpApiSpeed, gttsSlow } = getCurrentTtsSpeeds();
+      _perform_single_memo_line_playback(state.currentMemoLineData, tartunlpApiSpeed, gttsSlow);
+    }
+
+    async function _perform_answer_playback(topicName, qaIndex, tartunlpSpeedToUse, gttsSlowToUse) {
+      try {
+        if (!topicName || !(topicName in topicContent) || !topicContent[topicName].length) {
+          logText('Topic content not found or is empty for answer.\n');
+          return;
+        }
+
+        const conversationLines = topicContent[topicName];
+        if (!(0 <= qaIndex && qaIndex < conversationLines.length)) {
+          logText(`Invalid question index for answer: ${qaIndex}.\n`);
+          return;
+        }
+
+        const currentLine = conversationLines[qaIndex];
+        const estonianAnswer = currentLine[1];
+        const englishAnswerTranslation = currentLine[3];
+
+        logText(`Answer for Question ${qaIndex + 1} of ${conversationLines.length}:\n\n`);
+        logText(`Estonian A: ${estonianAnswer}\n`);
+        await estonian_tts_tartunlp(estonianAnswer, 'vesta', tartunlpSpeedToUse);
+
+        if (enableEnglishCheckbox.checked) {
+          logText(`Translate A: ${englishAnswerTranslation}\n`);
+          await english_tts_gtts(englishAnswerTranslation, gttsSlowToUse);
+        }
+
+        logText('\n--- Ready for NEXT QUESTION or new topic. ---\n');
+      } catch (error) {
+        console.error(error);
+        logText(`Error during answer playback: ${error}\n`);
+      } finally {
+        state.qaThreadActive = false;
+        _set_qa_buttons_state(true);
+      }
+    }
+
+    function _trigger_answer_playback() {
+      if (state.qaThreadActive) {
+        logText('Audio presentation already in progress...\n');
+        return;
+      }
+
+      if (!state.activeTopic || state.currentQaIndex < 0) {
+        logText('No active question to provide an answer for.\n');
+        return;
+      }
+
+      const { tartunlpApiSpeed, gttsSlow } = getCurrentTtsSpeeds();
+      state.qaThreadActive = true;
+      _set_qa_buttons_state(false);
+      _perform_answer_playback(state.activeTopic, state.currentQaIndex, tartunlpApiSpeed, gttsSlow);
+    }
+
+    function on_give_answer_click() {
+      if (state.qaThreadActive) {
+        logText('Audio presentation already in progress...\n');
+        return;
+      }
+
+      clearText();
+
+      if (!state.activeTopic || state.currentQaIndex === -1) {
+        logText("No question active. Please click 'START QUESTION' or 'NEXT QUESTION' first to get an answer.\n");
+        return;
+      }
+
+      _trigger_answer_playback();
+    }
+
+    function on_repeat_question_click() {
+      clearText();
+      if (state.qaThreadActive) {
+        logText('Question presentation already in progress...\n');
+        return;
+      }
+
+      if (!state.activeTopic || state.currentQaIndex === -1) {
+        logText("No question to repeat. Please click 'START QUESTION' or 'NEXT QUESTION' first.\n");
+        return;
+      }
+
+      _trigger_qa_playback();
+    }
+
+    async function playExpectedAnswerAudio() {
+      if (state.answerAudioInProgress) {
+        return;
+      }
+
+      if (!state.activeTopic || state.currentQaIndex < 0) {
+        logText('No answer to repeat. Please start a question first.\n');
+        return;
+      }
+
+      const expectedAnswer = getExpectedEstonianAnswer();
+      if (!expectedAnswer) {
+        logText('No answer available for this question.\n');
+        return;
+      }
+
+      state.answerAudioInProgress = true;
+      try {
+        const { tartunlpApiSpeed } = getCurrentTtsSpeeds();
+        logText(`Repeating answer audio: ${expectedAnswer}\n`);
+        await estonian_tts_tartunlp(expectedAnswer, 'vesta', tartunlpApiSpeed);
+      } catch (error) {
+        console.error(error);
+        logText(`Audio playback failed: ${error}\n`);
+      } finally {
+        state.answerAudioInProgress = false;
+      }
+    }
+
+    function on_repeat_answer_click() {
+      clearText();
+      playExpectedAnswerAudio();
+    }
+
+    function shouldSkipDuplicateSpeech(message, speaker = 'mari') {
+      const speechText = normalizeSpeechText(message);
+      if (!speechText) {
+        return true;
+      }
+
+      const normalizedKey = speechText;
+      const now = Date.now();
+      return normalizedKey === ttsPlaybackCache.lastKey && (now - ttsPlaybackCache.lastAt) < 1800;
+    }
+
+    async function playTeacherFeedbackAudio(message) {
+      if (!message || state.answerAudioInProgress) {
+        return;
+      }
+
+      if (shouldSkipDuplicateSpeech(message, 'mari')) {
+        return;
+      }
+
+      state.answerAudioInProgress = true;
+      try {
+        const { tartunlpApiSpeed } = getCurrentTtsSpeeds();
+        await estonian_tts_tartunlp(message, 'mari', tartunlpApiSpeed);
+      } finally {
+        state.answerAudioInProgress = false;
+      }
+    }
+
+    async function playAnswerCheckAudio(expectedAnswer) {
+      if (!expectedAnswer || state.answerAudioInProgress) {
+        return;
+      }
+
+      if (shouldSkipDuplicateSpeech(expectedAnswer, 'vesta')) {
+        return;
+      }
+
+      state.answerAudioInProgress = true;
+      try {
+        const { tartunlpApiSpeed } = getCurrentTtsSpeeds();
+        await estonian_tts_tartunlp(expectedAnswer, 'vesta', tartunlpApiSpeed);
+      } finally {
+        state.answerAudioInProgress = false;
+      }
+    }
+
+    async function on_send_answer_click() {
+      const currentLine = getCurrentLineData();
+      const typedAnswer = userAnswer.value.trim();
+      const currentCheckKey = `${state.activeTopic}|${state.currentQaIndex}|${typedAnswer}|${currentLine ? currentLine[1] : ''}`;
+      const now = Date.now();
+
+      if (state.answerCheckInProgress) {
+        return;
+      }
+
+      if (state.lastAnswerCheckKey === currentCheckKey && (now - state.lastAnswerCheckAt) < 400) {
+        return;
+      }
+
+      state.lastAnswerCheckKey = currentCheckKey;
+      state.lastAnswerCheckAt = now;
+      state.answerCheckInProgress = true;
+      state.answerAudioInProgress = true;
+      state.answerCheckCooldownUntil = now + 300;
+      setButtonState(nextQuestion, false);
+      setButtonState(previousQuestion, false);
+      clearText();
+
+      try {
+        if (!currentLine) {
+          logText('Please start a practice question first.\n');
+          return;
+        }
+
+        if (!typedAnswer) {
+          logText('Type your Estonian answer before checking.\n');
+          return;
+        }
+
+        const expectedAnswer = getExpectedEstonianAnswer();
+        const teacherResponseText = getTeacherResponseText();
+        const normalizedUser = normalizeAnswerText(typedAnswer);
+        const normalizedExpected = normalizeAnswerText(expectedAnswer);
+        const isCorrect = normalizedUser === normalizedExpected;
+
+        const feedbackMessage = isCorrect ? 'Väga hea!' : 'Ei, õige vastus on';
+        const feedbackKey = normalizeSpeechText(feedbackMessage);
+        const teacherAnswerText = currentLine && currentLine[1] ? currentLine[1] : teacherResponseText;
+        const answerAudioText = state.practiceRole === 'questioner' ? expectedAnswer : (teacherAnswerText || expectedAnswer);
+        const answerKey = normalizeSpeechText(answerAudioText);
+
+        if (isCorrect) {
+          const isQuestioner = state.practiceRole === 'questioner';
+          assistantText.value = isQuestioner
+            ? `✅ Väga hea! "${expectedAnswer}" on õige.\nTeacher says: ${teacherAnswerText || expectedAnswer}`
+            : `✅ Väga hea! "${expectedAnswer}" on õige.`;
+          playSuccessTone();
+
+          const { tartunlpApiSpeed } = getCurrentTtsSpeeds();
+          await estonian_tts_tartunlp(feedbackMessage, 'mari', tartunlpApiSpeed);
+
+          if (expectedAnswer) {
+            await estonian_tts_tartunlp(expectedAnswer, 'vesta', tartunlpApiSpeed);
+          }
+
+          if (isQuestioner && teacherAnswerText) {
+            await estonian_tts_tartunlp(teacherAnswerText, 'mari', tartunlpApiSpeed);
+          }
+        } else {
+          assistantText.value = `❌ Ei, õige vastus on "${expectedAnswer}"`;
+          playFailureTone();
+          const spokenCorrection = state.practiceRole === 'questioner'
+            ? `Ei. Õige vastus on ${expectedAnswer}`
+            : 'Ei. Õige vastus on';
+          await playTeacherFeedbackAudio(spokenCorrection);
+
+          if (state.practiceRole !== 'questioner' && answerAudioText) {
+            await playAnswerCheckAudio(answerAudioText);
+          }
+        }
+
+        if (!answerAudioText) {
+          return;
+        }
+
+        if (isCorrect && feedbackKey !== answerKey && state.practiceRole !== 'questioner') {
+          await playAnswerCheckAudio(answerAudioText);
+        }
+      } catch (error) {
+        console.error(error);
+        logText(`Audio playback failed: ${error}\n`);
+      } finally {
+        state.answerCheckInProgress = false;
+        state.answerAudioInProgress = false;
+        setButtonState(nextQuestion, true);
+        setButtonState(previousQuestion, true);
+      }
+    }
+
+    function on_role_toggle_click(event) {
+      const selectedRole = event.currentTarget.dataset.role;
+      if (!selectedRole || selectedRole === state.practiceRole) {
+        return;
+      }
+
+      state.practiceRole = selectedRole;
+      document.querySelectorAll('.role-option').forEach(button => {
+        const isActive = button.dataset.role === selectedRole;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+      });
+      updateRoleStatus();
+      updatePromptSentence();
+    }
+
+    function on_reset_speed_click() {
+      speedSlider.value = 33;
+      logText('TTS speed reset to normal.\n');
+    }
+
+    function populateTopics() {
+      topicSelect.innerHTML = '';
+      topicList.forEach(topic => {
+        const option = document.createElement('option');
+        option.value = topic;
+        option.textContent = topic;
+        topicSelect.appendChild(option);
+      });
+      if (topicList.length) {
+        topicSelect.value = topicList[0];
+      }
+    }
+
+    async function initialize() {
+      await loadTopicsFromBackend();
+      populateTopics();
+
+      questionButton.addEventListener('click', on_start_question_click);
+      previousQuestion.addEventListener('click', on_previous_question_click);
+      nextQuestion.addEventListener('click', on_next_question_click);
+      playMemorizationButton.addEventListener('click', on_play_memorization_click);
+      giveAnswerButton.addEventListener('click', on_give_answer_click);
+      answerButton.addEventListener('click', on_send_answer_click);
+      repeatAnswerButton.addEventListener('click', on_repeat_answer_click);
+      repeatQuestion.addEventListener('click', on_repeat_question_click);
+      resetSpeedButton.addEventListener('click', on_reset_speed_click);
+      repeatMemoButton.addEventListener('click', on_repeat_memo_click);
+      stopMemoButton.addEventListener('click', on_stop_memo_click);
+      document.querySelectorAll('.role-option').forEach(button => {
+        button.addEventListener('click', on_role_toggle_click);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        const activeTag = document.activeElement && document.activeElement.tagName;
+        const isTypingTarget = activeTag === 'TEXTAREA' || activeTag === 'INPUT';
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          nextQuestion.focus();
+          return;
+        }
+
+        if (isTypingTarget) {
+          return;
+        }
+
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          nextQuestion.click();
+          return;
+        }
+
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          previousQuestion.click();
+        }
+      });
+
+      userAnswer.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey && !event.repeat) {
+          event.preventDefault();
+          on_send_answer_click();
+        }
+      });
+
+      updateRoleStatus();
+      updatePromptSentence();
+      clearText();
+      logText("Tere Tere ! Select a topic and click 'START QUESTION'.\n");
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    initialize();
+  </script>
+</body>
+</html>

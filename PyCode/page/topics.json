@@ -1,0 +1,607 @@
+{
+  "topicList": [
+    "Enda tutvustamine - self Introduction",
+    "Vaba aeg ja hobid - Free time and hobbies",
+    "Päevaplaanid ja kokkulepped - Daily plans and appointments",
+    "Eesti Keele B1-Taseme Eksami Konsultatsioonivihik",
+    "Mis kell sa tavaliselt ärkad?",
+    "Mis teed seal?",
+    "Tere!",
+    "Mis juhtus?",
+    "Tere, mu kallis sõber!",
+    "Vabandust!",
+    "Tere! Ma sooviksin lauda broneerida.",
+    "Tere! Ma tahaksin lauda broneerida.",
+    "Tere! Siin on teile menüü. Kas soovite kohe midagi juua tellida?",
+    "Kas toon teile midagi juua? Meil on väga hea õllede valik.",
+    "Mis sa võtad? Mul on kõht jube tühi.",
+    "Kallis, mis me siis hommikul sööme? Kas sa oled kunagi lambaliha söönud?"
+
+  ],
+  "topicContent": {
+    "Enda tutvustamine - self Introduction": [
+      [
+        "Tere! Kuidas läheb?",
+        "Tere! Hästi, aitäh. Ja sul?",
+        "Hello! How are you?",
+        "Hello! Fine, thanks. And you?"
+      ],
+      [
+        "Mul läheb ka hästi. Minu nimi on Anna. Mis sinu nimi on?",
+        "Meeldiv tutvuda, Anna. Mina olen Mari.",
+        "I'm also doing well. My name is Anna. What is your name?",
+        "Nice to meet you, Anna. I am Mari."
+      ],
+      [
+        "Samuti meeldiv, Mari. Kust sa pärit oled?",
+        "Ma olen pärit Tartust, aga praegu elan Tallinnas. Ja sina, kust sina pärit oled ja kus sa elad?",
+        "Nice to meet you too, Mari. Where are you from?",
+        "I am from Tartu, but currently I live in Tallinn. And you, where are you from and where do you live?"
+      ],
+      [
+        "Mina olen Soomest, Helsingist, aga nüüd elan ka Tallinnas. Ma olen siin elanud alles pool aastat. Kui kaua sina oled Tallinnas olnud?",
+        "Ma olen Tallinnas elanud umbes viis aastat. Kolisin siia õpingute pärast.",
+        "I am from Finland, from Helsinki, but now I also live in Tallinn. I've only lived here for half a year. How long have you been in Tallinn?",
+        "I've lived in Tallinn for about five years. I moved here for studies."
+      ],
+      [
+        "Selge. Ja millal sa sündinud oled, kui see saladus pole?",
+        "Pole saladus! Ma olen sündinud tuhande üheksasaja üheksakümne kaheksandal aastal (1998). Aga sina?",
+        "I see. And when were you born, if it's not a secret?",
+        "It's not a secret! I was born in nineteen ninety-eight (1998). And you?"
+      ],
+      [
+        "Mina sündisin tuhande üheksasaja üheksakümne seitsmendal (1997). Mida sa siin Tallinnas teed? Sa mainisid õpinguid.",
+        "Jah, ma olen üliõpilane. Ma õpin Tallinna Ülikoolis ajalugu. Ja sina, millega sina tegeled?",
+        "I was born in nineteen ninety-seven (1997). What do you do here in Tallinn? You mentioned studies.",
+        "Yes, I'm a student. I study history at Tallinn University. And you, what do you do?"
+      ],
+      [
+        "Ma töötan siin tarkvaraarendajana.",
+        "See on huvitav!",
+        "I work here as a software developer.",
+        "That's interesting!"
+      ],
+      [
+        "Kas sul on mingeid hobisid?",
+        "Jah, mulle meeldib vabal ajal sporti teha, eriti jalgpalli mängida. Ja sulle?",
+        "Do you have any hobbies?",
+        "Yes, I like to do sports in my free time, especially play football. And you?"
+      ],
+      [
+        "Mulle meeldib lugeda ja looduses matkata.",
+        "Tore! Oli meeldiv sinuga vestelda, Anna.",
+        "I like to read and hike in nature.",
+        "Great! It was nice talking to you, Anna."
+      ],
+      [
+        "Sulle samuti, Mari! Nägemist!",
+        "Nägemist!",
+        "You too, Mari! Goodbye!",
+        "Goodbye!"
+      ]
+    ],
+    "Vaba aeg ja hobid - Free time and hobbies": [
+      [
+        "Mida sulle meeldib vabal ajal teha?",
+        "Mulle meeldib väga lugeda ja filme vaadata. Mõnikord käin ka sõpradega väljas.",
+        "What do you like to do in your free time?",
+        "I really like to read and watch movies. Sometimes I also go out with friends."
+      ],
+      [
+        "Kas sul on mõni lemmikraamat või -film?",
+        "Jah, mu lemmikraamat on 'Tõde ja õigus' ja hiljuti nähtud filmidest meeldis mulle 'Tenet'. Aga sina, mis sinu hobid on?",
+        "Do you have a favorite book or movie?",
+        "Yes, my favorite book is 'Truth and Justice' and from recently seen movies I liked 'Tenet'. And you, what are your hobbies?"
+      ],
+      [
+        "Mulle meeldib sporti teha. Ma mängin korvpalli ja käin jooksmas. Samuti naudin ma muusika kuulamist.",
+        "Mis muusikat sa kuulad?",
+        "I like to do sports. I play basketball and go running. I also enjoy listening to music.",
+        "What kind of music do you listen to?"
+      ],
+      [
+        "Ma kuulan peamiselt rokki ja elektroonilist muusikat. Kas sa mängid mõnda pilli?",
+        "Ei, kahjuks mitte, aga ma olen alati tahtnud kitarri õppida. Äkki kunagi proovin.",
+        "I mainly listen to rock and electronic music. Do you play any instruments?",
+        "No, unfortunately not, but I've always wanted to learn guitar. Maybe I'll try someday."
+      ],
+      [
+        "See on hea mõte! Kitarri õppimine võib olla väga rahuldustpakkuv. Kas sulle meeldib reisida?",
+        "Jah, väga! Ma unistan reisist Jaapanisse. Kas sina oled palju reisinud?",
+        "That's a good idea! Learning guitar can be very rewarding. Do you like to travel?",
+        "Yes, very much! I dream of a trip to Japan. Have you traveled a lot?"
+      ],
+      [
+        "Olen käinud mõnes Euroopa riigis. Mulle meeldib uusi kultuure avastada. Milliseid kohti sa veel külastada tahaksid?",
+        "Ma tahaksin näha Põhja-Norra virmalisi ja matkata Uus-Meremaa looduses.",
+        "I've been to a few European countries. I like discovering new cultures. What other places would you like to visit?",
+        "I would like to see the Northern Lights in Northern Norway and hike in nature in New Zealand."
+      ],
+      [
+        "Need kõlavad imeliselt! Loodetavasti saame mõlemad oma reisiunistused teoks teha.",
+        "Loodame parimat! Oli tore sinu hobidest kuulda.",
+        "Those sound wonderful! Hopefully, we can both make our travel dreams come true.",
+        "Let's hope for the best! It was nice to hear about your hobbies."
+      ]
+    ],
+    "Päevaplaanid ja kokkulepped - Daily plans and appointments": [
+      [
+        "Tere! Kuidas sul täna läheb? Kas sul on kiire päev?",
+        "Tere! Mul on üsna tegus päev. Mul on hommikul paar koosolekut ja pärastlõunal pean arsti juurde minema. Aga sina?",
+        "Hello! How are you today? Do you have a busy day?",
+        "Hello! I have quite a busy day. I have a couple of meetings in the morning and in the afternoon I have to go to the doctor. And you?"
+      ],
+      [
+        "Minul on hommikupoolik vaba, aga õhtul on plaanis sõbraga kinno minna. Mis kell sa arsti juurde lähed?",
+        "Mul on aeg kell kolm. Pärast seda mõtlesin poodi minna. Kas sa tahaksid ehk homme lõunat süüa?",
+        "My morning is free, but in the evening I plan to go to the cinema with a friend. What time are you going to the doctor?",
+        "My appointment is at three o'clock. After that, I thought about going to the store. Would you perhaps like to have lunch tomorrow?"
+      ],
+      [
+        "See oleks tore! Mis kell sulle sobiks?",
+        "Kas kell üks päeval sobiks? Me võiksime kohtuda kesklinnas, näiteks Viru Keskuse juures.",
+        "That would be great! What time would suit you?",
+        "Would one o'clock in the afternoon suit you? We could meet in the city center, for example, near Viru Keskus."
+      ],
+      [
+        "Kell üks sobib mulle hästi. Viru Keskuse juures on hea. Kas sa tead mõnda head söögikohta seal lähedal?",
+        "Jah, seal on mitu head varianti. Me võime kohapeal otsustada, mis meile kõige rohkem meeldib. Kas sul on mingeid eelistusi?",
+        "One o'clock suits me well. Near Viru Keskus is good. Do you know any good places to eat nearby?",
+        "Yes, there are several good options there. We can decide on the spot what we like the most. Do you have any preferences?"
+      ],
+      [
+        "Ei ole erilisi eelistusi, olen avatud kõigele. Väga hea, siis lepime homme kell üks Viru Keskuse juures kokku.",
+        "Suurepärane! Siis näeme homme. Edu sulle arsti juures!",
+        "No particular preferences, I'm open to anything. Very good, then let's agree on tomorrow at one o'clock near Viru Keskus.",
+        "Excellent! See you tomorrow then. Good luck at the doctor's!"
+      ],
+      [
+        "Aitäh! Sulle head kinoelamust!",
+        "Tänan! Nägemiseni!",
+        "Thanks! Enjoy the cinema!",
+        "Thanks! Goodbye!"
+      ]
+    ],
+    "Eesti Keele B1-Taseme Eksami Konsultatsioonivihik": [
+      [
+        "Eesti Keele B1-Taseme Eksami Konsultatsioonivihik",
+        "",
+        "Estonian Language B1-Level Exam Consultation Guide",
+        ""
+      ],
+      [
+        "Kirjutamine Esimene ülesanne Variant A",
+        "",
+        "Writing First Task Option A",
+        ""
+      ],
+      [
+        "Käisite veekeskuses aega veetmas. Teie paremaks teenindamiseks palutakse teil täita küsimustik. Vastake igale küsimusele.",
+        "",
+        "You visited a water park to spend some time. For better service, you are asked to fill out a questionnaire. Answer each question.",
+        ""
+      ],
+      [
+        "Vanus, Sugu, Kui tihti käite meie veekeskuses? Kellega koos käite veekeskuses?",
+        "",
+        "Age, Gender, How often do you visit our water park? With whom do you usually visit the water park?",
+        ""
+      ],
+      [
+        "Mida arvate veekeskuse tingimustest ja teenindusest? Mis teile siin kõige rohkem meeldib? miks?",
+        "",
+        "What do you think about the conditions and service at the water park? What do you like most about it? Why?",
+        ""
+      ],
+      [
+        "Mis ei meeldi? Miks? Kui kaua te tavaliselt veekeskuses aega veedate?",
+        "",
+        "What don't you like? Why? How long do you usually spend at the water park?",
+        ""
+      ],
+      [
+        "Kas soovitaksite meie veekeskust oma tuttavatele? Miks?",
+        "",
+        "Would you recommend our water park to your friends? Why?",
+        ""
+      ],
+      [
+        "Missugustes veekeskustes olete veel käinud?",
+        "",
+        "What other water parks have you visited?",
+        ""
+      ]
+    ],
+     "Mis kell sa tavaliselt ärkad?": [
+      [
+        "Mis kell sa tavaliselt ärkad?",
+        "Kell kaheksa.",
+        "What time do you usually wake up?",
+        "At eight o’clock."
+      ],
+      [
+        "Mida sa hommikul sööd ja jood?",
+        "Ma söön võileiba ja joon kohvi piimaga.",
+        "What do you eat and drink in the morning?",
+        "I eat a sandwich and drink coffee with milk."
+      ],
+      [
+        "Mis kellaks sa tööle lähed?",
+        "Kella üheksaks.",
+        "When do you go to work?",
+        "By nine o’clock."
+      ],
+      [
+        "Mis kellaks sa koju jõuad?",
+        "Kella viieks.",
+        "When do you get home?",
+        "By five o’clock."
+      ],
+      [
+        "Mis kell sa magama lähed?",
+        "Kella kümne paiku.",
+        "When do you go to sleep?",
+        "Around ten o’clock."
+      ],
+      [
+        "Mitu tundi sa magad?",
+        "Kümme tundi.",
+        "How many hours do you sleep?",
+        "Ten hours."
+      ]
+    ],
+      "Mis teed seal?": [
+      [
+        "Mis teed seal?",
+        "Ma pean koristama.",
+        "What are you doing there?",
+        "I have to tidy up."
+      ],
+      [
+        "Mida sa siis tegema pead?",
+        "Mul on vaja vaipu kloppida ja põrandaid pesta.",
+        "What do you have to do then?",
+        "I have to beat the carpets and wash the floors."
+      ],
+      [
+        "See pole ju raske!",
+        "Mul on vaja ka pesu pesta.",
+        "That`s not hard!",
+        "I need to wash the laundry too!"
+      ],
+      [
+        "Imelihtne!",
+        "Mul on vaja ka nõusid pesta.",
+        "That's just too easy!",
+        "I need to wash the dishes too."
+      ],
+      [
+        "Imelihtne!",
+        "Mul on vaja ka aknaid pesta.",
+        "That's just too easy!",
+        "I also need to wash the windows."
+      ],
+      [
+        "Imelihtne! Mul on ka mõned aknad. Palun pese need ka ära!",
+        "Mulle ei meeldi aknaid pesta!",
+        "That's just too easy! I have some windows too. Please wash those too!",
+        "I dont like washing windows!."
+      ],
+      [
+        "Aknaid pesta on lõbus!",
+        "Jah, aknaid pesta on lõbus!",
+        "Washing windows is fun!",
+        "Yes, washing windows is fun!"
+      ]
+    ],
+      "Tere!": [
+      [
+        "Tere!",
+        "Mida sa ütlesid?",
+        "Hello!",
+        "What did you say?"
+      ],
+      [
+        "Ma ütlesin: “Tere!”",
+        "Tere-tere!",
+        "I said “Hello!”",
+        "Hello!"
+      ],
+      [
+        "Kellega sa räägid?",
+        "Sinuga räägin.",
+        "With whom are you talking?",
+        "I’m talking with you."
+      ],
+      [
+        "Ahah! Minuga on parem rääkida kui seinaga, eks?",
+        "Muidugi!",
+        "Aha! It's better to talk with me than to a wall, right?",
+        "Of course!"
+      ]
+    ],
+      "Mis juhtus?": [
+      [
+        "Mis juhtus?",
+        "Ma vihastasin.",
+        "What happened?",
+        "I got angry."
+      ],
+      [
+        "Kelle peale sa vihastasid?",
+        "Televiisori peale.",
+        "With whom did you get angry?",
+        "With the television."
+      ],
+      [
+        "Miks?",
+        "Ta räägib liiga palju ja ei kuula üldse.",
+        "Why?",
+        "It speaks too much and doesn’t listen at all."
+      ],
+      [
+        "Ahah! Minuga on parem rääkida kui seinaga, eks?",
+        "Muidugi!",
+        "Aha! It's better to talk with me than to a wall, right?",
+        "Of course!"
+      ],
+      [
+        "Mis juhtus?",
+        "Ma vihastasin.",
+        "What happened?",
+        "I got angry."
+      ],
+      [
+        "Kelle peale sa vihastasid?",
+        "Oma hiire peale.",
+        "With whom did you get angry?",
+        "With my mouse."
+      ],
+      [
+        "Miks?",
+        "Ta on liiga kiire.",
+        "Why?",
+        "It's too fast."
+      ]
+    ],
+      "Tere, mu kallis sõber!": [
+      [
+        "Tere, mu kallis sõber!",
+        "Tere, Õpetaja! Kas sa mäletad oma sündi?",
+        "Hello, my dear friend!",
+        "Hello, Teacher! Do you remember your birth?"
+      ],
+      [
+        "Ei mäleta!",
+        "Aga kas sa mäletad oma lapsepõlve?",
+        "No, I don't.",
+        "But do you remember your childhood?"
+      ],
+      [
+        "Ei mäleta!",
+        "Aga kas sa mäletad oma esimest tööpäeva?",
+        "No, I don't.",
+        "But do you remember your first day at work?"
+      ],
+      [
+        "Muidugi mäletan!",
+        "Of course I remember!",
+        "Muidugi!",
+        "Of course!"
+      ]
+    ],
+      "Vabandust!": [
+      [
+        "Vabandust!",
+        "Kuidas ma saan kasulik olla?",
+        "Excuse me!",
+        "How can I help you?"
+      ],
+      [
+        "Ma tahaksin oma arve ära maksta.",
+        "Nii. Kuulan. Mis teil oli?",
+        "I would like to pay my bill.",
+        "Ok, I’m listening. What did you have?"
+      ],
+      [
+        "Päevapraad ja klaas punast veini.",
+        "Ahah. 150 eurot palun.",
+        "The daily special and a glass of red wine.",
+        "I see. 150 euros please."
+      ],
+      [
+        "See arve on liiga suur!",
+        "Päevapraad ja viis pudelit punast veini. Hmm. See on 150 eurot.",
+        "This bill is too much.",
+        "The daily special and five bottles of red wine. Hmm. This is 150 euros."
+      ],
+      [
+        "See pole minu arve.",
+        "Oi jah. Vabandust. Viis eurot palun.",
+        "This is not my bill.",
+        "Oh, dear. I'm sorry. Five euros please."
+      ],
+      [
+        "Palun.",
+        "Kohe annan 45 eurot tagasi ka. Tšekki on vaja?",
+        "Here you are.",
+        "I’ll give your 45 euros change in a minute. Do you need the receipt?"
+      ],
+      [
+        "Ei ole.",
+        "Äitah. Head aega!",
+        "No, I don't.",
+        "Thank you. Goodbye!"
+      ]
+    ],
+      "Tere! Ma sooviksin lauda broneerida.": [
+      [
+        "Tere! Ma sooviksin lauda broneerida.",
+        "Täna kahjuks ei saa. Näete, meil on siin hullumaja.",
+        "Hello! I would like to reserve a table.",
+        "I’m sorry, but today you can’t. You see, we have quite a madhouse here."
+      ],
+      [
+        "Ma ei tahagi tänaseks.",
+        "Mis ajaks te siis broneerida soovite?",
+        "I don't want it for today.",
+        "For when do you want to make the reservation?"
+      ],
+      [
+        "Mul oleks vaja lauda laupäeval.",
+        "Mitmele inimesele?",
+        "I would need the table for Saturday.",
+        "For how many persons?"
+      ],
+      [
+        "Kahele.",
+        "Millal teil vaja on, kas päeval või õhtul?",
+        "For two.",
+        "When do you need it, during the day or in the evening?"
+      ],
+      [
+        "Hommikul kell kaheksa.",
+        "Vabandust, aga kell kaheksa hommikul on restoran suletud.",
+        "Eight o'clock in the morning.",
+        "I'm sorry, but at eight o'clock in the morning the restaurant is closed."
+      ]
+      ],
+      "Tere! Ma tahaksin lauda broneerida.": [
+      [
+        "Tere! Ma tahaksin lauda broneerida.",
+        "Mis ajaks te broneerida soovite?",
+        "Hello! I would like to reserve a table.",
+        "For when do you want to make the reservation?"
+      ],
+      [
+        "Mul oleks vaja lauda pühapäeva õhtul kell kaheksa.",
+        "Ja mitmele inimesele ma laua kinni panen?",
+        "I would need the table Sunday evening at eight o'clock.",
+        "And for how many persons do I book the table?"
+      ],
+      [
+        "Kaheksale.",
+        "Jah, ja kelle nimele?",
+        "For eight.",
+        "Yes, and in whose name?"
+      ],
+      [
+        "Pange Anna nimele.",
+        "Väga hea. Panin teile kinni selle uksepoolse laua.",
+        "Put it in Anna's name.",
+        "Very good. I reserved that table by the door for you."
+      ],
+      [
+        "Kas see aknapoolne laud on ka vaba? Mulle meeldiks see rohkem.",
+        "Las ma vaatan. Paneme siis selle kinni.",
+        "Is this table by the window also free? I would like that one better.",
+        "Let me see. Let’s reserve this one then."
+      ],
+      [
+        "Tänan väga! Nägemiseni!",
+        "Ilusat päeva, Anna!",
+        "Thank you very much. See you!",
+        "Have a nice day, Anna!"
+      ]
+      ],
+      "Tere! Siin on teile menüü. Kas soovite kohe midagi juua tellida?": [
+      [
+        "Tere! Siin on teile menüü. Kas soovite kohe midagi juua tellida?",
+        "Missugust heledat õlut teil on?",
+        "Hello! Here is the menu for you. Would you like to order some drinks right away?",
+        "What kind of pale beer do you have?"
+      ],
+      [
+        "Õllede valik on siin.",
+        "Ma võtan selle käsitööõlle.",
+        "The beer selection is here.",
+        "I will take this craft beer."
+      ],
+      [
+        "Väga hea valik!",
+        "Äitah!",
+        "Excellent choice!",
+        "thank you!"
+      ]
+      ],
+      "Kas toon teile midagi juua? Meil on väga hea õllede valik.": [
+      [
+        "Kas toon teile midagi juua? Meil on väga hea õllede valik.",
+        "Tegelikult ma eelistan õllele veini.",
+        "Shall I bring you something to drink? We have a very good beer selection.",
+        "Actually, I prefer wine to beer."
+      ],
+      [
+        "Veinikaart on siin.",
+        "Mis majavein teil on?",
+        "The wine menu is here.",
+        "What kind of house wine do you have?"
+      ],
+      [
+        "Punane majavein on meil Prantsusmaalt ja valge on Itaaliast.",
+        "Klaas punast majaveini, palun.",
+        "Our red house wine is from France and the white is from Italy.",
+        "A glass of red house wine, please."
+      ],
+      [
+        "Väga hea valik! Kohe toon teie veini.",
+        "Äitah!",
+        "Excellent choice! I will bring your wine right away.",
+        "thank you!"
+      ]
+      ],
+      "Mis sa võtad? Mul on kõht jube tühi.": [
+      [
+        "Mis sa võtad? Mul on kõht jube tühi.",
+        "Ma ei tea... Oo, hakklihasupp. Ma võtan selle.",
+        "What will you have? I'm starving.",
+        "I don't know. Oh, the minced meat soup. I'll have this."
+      ],
+      [
+        "Mina ei taha suppi. Ma tahan praadi, ma tahan liha!",
+        "Ma mõtlesin, et sa oled taimetoitlane.",
+        "I don't want soup. I want a main course, I want meat!",
+        "I thought you were a vegetarian."
+      ],
+      [
+        "Mina? Mina olen alati liha söönud. Ma armastan liha, eriti maitseb mulle kanaliha ja küülikuliha ja pardiliha.",
+        "Olgu, olgu. Näe, siin on praed: burger grillitud kanalihaga.",
+        "Me? I have always eaten meat. I love meat, I especially like chicken and rabbit and duck.",
+        "OK, OK. Look the main courses are here: a burger with grilled chicken."
+      ],
+      [
+        "See kõlab väga hästi. Ma võtan kohe kaks burgerit.",
+        "Sobib!",
+        "This sounds very good. I will have even two burgers.",
+        "OK!"
+      ]
+      ],
+      "Kallis, mis me siis hommikul sööme? Kas sa oled kunagi lambaliha söönud?": [
+      [
+        "mis me siis hommikul sööme? Kas sa oled kunagi lambaliha söönud?",
+        "Ei ole. Ma olen taimetoitlane.",
+        "what shall we eat in the morning? Have you ever eaten mutton?",
+        "No, I haven't. I'm a vegetarian."
+      ],
+      [
+        "Aga kas sa oled proovinud marineeritud kala?",
+        "Olen küll, aga mulle ei maitse toores kala.",
+        "But have you tried marinated fish?",
+        "Yes, I have, but I don't like raw fish."
+      ],
+      [
+        "Aga kas sa oled joonud värsket porgandimahla?",
+        "Ei ole, mulle ei maitse porgandid.",
+        "But have you drunk fresh carrot juice?",
+        "No, I haven't, I don't like carrots."
+      ],
+      [
+        "Aga kas sa oled maitsnud röstitud peete kitsejuustuga?",
+        "Ma ei söö kitsejuustu. Ma võtaksin lihtsalt praetud muna ja värsket salatit.",
+        "But have you tasted roasted beetroots with goat cheese?",
+        "I don't eat goat cheese. I would have just a fried egg and some fresh salad."
+      ]
+    ]  
+  }
+}
